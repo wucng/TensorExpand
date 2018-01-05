@@ -1,0 +1,1 @@
+[TF-Slim](https://github.com/tensorflow/models/tree/master/research/slim)的更多CNN实现可以通过SlimNetsLayer连接到TensorLayer。

@@ -1,0 +1,1 @@
+ MLP分类任务，请参阅[tutorial_mnist.py](https://github.com/tensorlayer/tensorlayer/blob/master/example/tutorial_mnist.py)。。
