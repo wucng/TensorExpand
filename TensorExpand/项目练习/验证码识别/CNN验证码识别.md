@@ -15,6 +15,10 @@
 
 新开一个专门存储TensorFlow项目的仓库逐步更新欢迎star ：[tensorflow](https://github.com/luyishisi/tensorflow)
 
+# 项目流程图
+
+![这里写图片描述](http://img.blog.csdn.net/20180115141651865?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
 # 项目综述：
 用卷积神经网络识别复杂字符验证码
 
@@ -56,3 +60,4 @@ TensorFlow—cnn 批量生成验证码并用cnn训练： [github](https://github
 > [Number plate recognition with Tensorflow](http://matthewearl.github.io/2016/05/06/cnn-anpr/)
 
 > [最初cnn学习自此](http://blog.topspeedsnail.com/archives/10858)
+
