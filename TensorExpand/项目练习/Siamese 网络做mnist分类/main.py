@@ -201,7 +201,14 @@ with tf.Session() as sess:
         loss_=[loss0,loss1,loss2]
         label.append(list.index(loss_,min(loss_)))
 
-    print('label',label,'real',real)
+    # print('label',label,'real',real)
+
+    acc=0
+    for i,j in zip(label,real):
+        if int(i)-int(j)==0:
+            acc+=1
+
+    print('acc',acc/len(label))
 
 
 
