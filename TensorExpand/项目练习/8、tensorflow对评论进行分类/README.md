@@ -52,3 +52,35 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 # 思路流程
 ![这里写图片描述](http://img.blog.csdn.net/20180117145427716?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+# 文件说明
+[main.py](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0/8%E3%80%81tensorflow%E5%AF%B9%E8%AF%84%E8%AE%BA%E8%BF%9B%E8%A1%8C%E5%88%86%E7%B1%BB/main.py)  
+输入序列定长 [batch_size,len(lex)]  # lex为词汇表
+label：shape [batch_size,2]
+模型：DNN 、rnn、1D cnn
+loss：softmax_cross_entropy_with_logits
+optimizer ： tf.train.AdamOptimizer().minimize(cost_func)
+
+[main_2.py](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0/8%E3%80%81tensorflow%E5%AF%B9%E8%AF%84%E8%AE%BA%E8%BF%9B%E8%A1%8C%E5%88%86%E7%B1%BB/main_2.py)
+输入序列不定长 [batch_size,None]
+label:[batch_size,1]
+模型：rnn_net_1
+loss: legacy_seq2seq.sequence_loss
+
+```python
+cost_func = legacy_seq2seq.sequence_loss([predict], [Y], [tf.ones_like(Y, dtype=tf.float32)], len(lex))
+cost = tf.reduce_mean(cost_func)
+tvars = tf.trainable_variables()
+grads, _ = tf.clip_by_global_norm(tf.gradients(cost, tvars), 5)
+optimizer = tf.train.AdamOptimizer(0.001).apply_gradients(zip(grads, tvars))
+```
+
+
+[main_输入长度不固定.py](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0/8%E3%80%81tensorflow%E5%AF%B9%E8%AF%84%E8%AE%BA%E8%BF%9B%E8%A1%8C%E5%88%86%E7%B1%BB/main_%E8%BE%93%E5%85%A5%E9%95%BF%E5%BA%A6%E4%B8%8D%E5%9B%BA%E5%AE%9A.py)
+
+输入序列不定长 [batch_size,None]
+label:[batch_size,2]
+模型：rnn_net_1(x)
+loss：softmax_cross_entropy_with_logits
+optimizer ： tf.train.AdamOptimizer().minimize(cost_func)
+
