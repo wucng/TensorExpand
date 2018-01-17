@@ -1,4 +1,10 @@
-# python3
+#! /usr/bin/python
+# -*- coding: utf8 -*-
+
+'''
+# 输入x不定长 ,此时只能一条条处理 即batc_size=1 否则会报错
+# 或者 找到最长的序列，其他的用0 填充 保证所有序列长度一致
+'''
 
 import numpy as np
 import tensorflow as tf
