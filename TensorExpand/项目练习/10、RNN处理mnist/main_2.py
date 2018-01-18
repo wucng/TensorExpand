@@ -27,7 +27,7 @@ def recurrent_neural_network(data):
              'b_': tf.Variable(tf.random_normal([n_output_layer]))}
 
     lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(rnn_size)
-    initial_state=lstm_cell.zero_state(batch_size,tf.float32) # 限制了每次输入的数据只能是batch_size个数据 或者小于batch_size
+    initial_state=lstm_cell.zero_state(batch_size,tf.float32) # 限制了每次输入的数据只能是batch_size个数据 （去掉 输入的batch_size就可以随意）
     '''
     data = tf.transpose(data, [1, 0, 2])
     data = tf.reshape(data, [-1, chunk_size])
