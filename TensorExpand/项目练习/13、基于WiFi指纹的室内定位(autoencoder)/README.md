@@ -75,4 +75,4 @@ print(test_y)
 ```
 
 # 模型流程
-![这里写图片描述](http://img.blog.csdn.net/20180118111148254?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![这里写图片描述](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0/13%E3%80%81%E5%9F%BA%E4%BA%8EWiFi%E6%8C%87%E7%BA%B9%E7%9A%84%E5%AE%A4%E5%86%85%E5%AE%9A%E4%BD%8D(autoencoder)/%E6%A8%A1%E5%9E%8B%E6%B5%81%E7%A8%8B.png?raw=true)
