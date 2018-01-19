@@ -97,3 +97,7 @@ with tf.Session():
 生成的mid音乐：[auto_gen_music](http://blog.topspeedsnail.com/wp-content/uploads/2016/11/auto_gen_music.mid)
 
 音乐分类：https://github.com/despoisj/DeepAudioClassification
+
+# 模型思路
+![这里写图片描述](http://img.blog.csdn.net/20180119161515180?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
