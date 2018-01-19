@@ -13,16 +13,11 @@ import tensorflow as tf
 import codecs
 from tensorflow.contrib import legacy_seq2seq
 from tensorflow.examples.tutorials.mnist import input_data
+import cv2
 
 mnist = input_data.read_data_sets('./MNIST_data', one_hot=False)
 
-batch_size=128
-epochs=1
-
 #---------------------------------------RNN--------------------------------------#
-
-input_data = tf.placeholder(tf.float32, [batch_size, None]) # [batch_size,28*28*1]
-output_targets = tf.placeholder(tf.int32, [batch_size, ]) # [batch_size,]
 
 # 定义RNN
 def neural_network(model='lstm', rnn_size=128, num_layers=2):
@@ -42,7 +37,8 @@ def neural_network(model='lstm', rnn_size=128, num_layers=2):
     initial_state = cell.zero_state(batch_size, tf.float32)
 
     # ------------------#
-    inputs=tf.reshape(input_data,[batch_size,28,28,1])
+    # inputs=tf.reshape(input_data,[batch_size,28,28,1])
+    inputs=input_data
     inputs=tf.layers.conv2d(inputs,128,3,padding='SAME',activation=tf.nn.relu)
     inputs=tf.reshape(inputs,[batch_size,28*28,128])
     # ------------------------#
@@ -65,6 +61,9 @@ def train_neural_network():
     # loss = tf.nn.seq2seq.sequence_loss_by_example([logits], [targets], [tf.ones_like(targets, dtype=tf.float32)],
     #                                               len(words))
     loss=legacy_seq2seq.sequence_loss_by_example([logits], [targets], [tf.ones_like(targets, dtype=tf.float32)])
+
+    # loss = legacy_seq2seq.sequence_loss([logits], [targets], [tf.ones_like(targets, dtype=tf.float32)])
+
     cost = tf.reduce_mean(loss)
     learning_rate = tf.Variable(0.0, trainable=False)
     tvars = tf.trainable_variables()
@@ -83,20 +82,52 @@ def train_neural_network():
                 x_batches,y_batches=mnist.train.next_batch(batch_size)
                 # y_batches=np.round(x_batches).astype(np.uint8)
                 train_loss, _, _ = sess.run([cost, last_state, train_op],
-                                            feed_dict={input_data: x_batches, output_targets: y_batches})
+                                            feed_dict={input_data: x_batches.reshape([-1,28,28,1]), output_targets: y_batches})
                 # n += 1
                 if batche %20==0:
                     print(epoch, batche, train_loss)
-            # if epoch % 7 == 0:
-            #     saver.save(sess, logdir+'poetry.module', global_step=epoch)
+            if epoch % 7 == 0:
+                saver.save(sess, logdir+'model.ckpt', global_step=epoch)
+
+
+def generate_mnist():
+    logits, _, _, _, _ = neural_network() # [batch_size,28*28*1]
+    predict=tf.reshape(logits,[batch_size,28,28,1])
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+
+        saver = tf.train.Saver(tf.global_variables())
+        # saver.restore(sess, 'girl.ckpt-49')
+        ckpt = tf.train.get_checkpoint_state(logdir)
+        if ckpt and ckpt.model_checkpoint_path:
+            saver.restore(sess, ckpt.model_checkpoint_path)
+
+        pics = np.zeros((batch_size, 28, 28, 1), dtype=np.float32)
+
+        for i in range(28):
+            for j in range(28):
+                for k in range(1):
+                    next_pic = sess.run(predict, feed_dict={input_data: pics})
+                    pics[:, i, j, k] = next_pic[:, i, j, k]
+
+        cv2.imwrite('mnist.jpg', pics[0])
+        print('生成mnist图: mnist.jpg')
+
 
 if __name__=="__main__":
+    batch_size = 128
+    epochs = 1
+    input_data = tf.placeholder(tf.float32, [None, 28, 28, 1])  # [None,28,28,1]
+    output_targets = tf.placeholder(tf.int32, [None, ])  # [None,]
+
+    logdir='./model/'
+
     train =1
+
     if train==1:
         train_neural_network()
-    # elif train==-1:
-    #     # print(gen_poetry())
-    #     print(gen_poetry_with_head('一二三四'))
+    elif train==-1:
+        generate_mnist()
     else:
         print('1 train ;-1 inference')
         exit(-1)
