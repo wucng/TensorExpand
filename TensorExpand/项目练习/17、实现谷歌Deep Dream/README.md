@@ -13,6 +13,7 @@ Deep Dream是取预训练模型的某一层（神经网络有59层，前几层�
 - https://github.com/google/deepdream
 - http://www.alanzucconi.com/2016/05/25/generating-deep-dreams/
 - http://ryankennedy.io/running-the-deep-dream/
+- https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/tutorials/deepdream
 
 下图是lena经过《[open_nsfw: 基于Caffe的成人图片识别模型](http://blog.topspeedsnail.com/archives/9440)》处理后生成的图像：
 
