@@ -1,8 +1,12 @@
 参考：
 1、[官方文档教程](https://help.aliyun.com/document_detail/50654.html?spm=5176.doc51800.6.566.MdxCQD)
+
 2、[平台使用教程](https://help.aliyun.com/document_detail/49571.html#TensorFlow)
+
 3、[平台使用教程](https://yq.aliyun.com/articles/72841?utm_campaign=wenzhang&utm_medium=article&utm_source=QQ-qun&2017330&utm_content=m_15442)
+
 4、[平台使用教程](http://www.cnblogs.com/iyulang/p/6648603.html)
+
 5、[开通机器学习PAI流程](https://help.aliyun.com/document_detail/53262.html?spm=5176.doc51800.6.577.Tjv21s)
 
 
@@ -186,6 +190,7 @@ if __name__ == '__main__':
 1、开通对象[存储OSS](https://oss.console.aliyun.com/bucket/oss-cn-shanghai/tensorflow-keras/object?path=)
 
 Object管理--->新建文件夹
+
 先新建一个mnist文件夹，再在该文件夹下建4个文件夹，分别为：
 datas（存放数据）、train_code(存放训练脚本)、predict_code(推理脚本)、check_point(输出文件)
 
@@ -193,12 +198,14 @@ datas（存放数据）、train_code(存放训练脚本)、predict_code(推理�
 
 
 3、大数据--->机器学习 打开PAI
+
 ![这里写图片描述](http://img.blog.csdn.net/20180125153752891?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 [进入机器学习](https://pai.base.shuju.aliyun.com/experiment.htm?etag=oxs-base-biz-dmsdp011192097164.em14&Lang=zh_CN&experimentId=43194)
 
 
 组件--->深度学习（Beta）
+
 ![这里写图片描述](http://img.blog.csdn.net/20180125153904485?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 双击TensorFlow 进行参数配置
@@ -206,14 +213,17 @@ datas（存放数据）、train_code(存放训练脚本)、predict_code(推理�
 ![这里写图片描述](http://img.blog.csdn.net/20180125153928343?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 执行最下面的运行，右键TensorFlow查看日志，查看运行信息
+
 ![这里写图片描述](http://img.blog.csdn.net/20180125153951585?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 ![这里写图片描述](http://img.blog.csdn.net/20180125154008349?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 如果 train与predict分开的情况，还需加一个TensorFlow做预测
+
 ![这里写图片描述](http://img.blog.csdn.net/20180125154037033?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 预测的TensorFlow参数配置，
+
 ![这里写图片描述](http://img.blog.csdn.net/20180125154055455?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 # Tensorflow_cifar10案例
