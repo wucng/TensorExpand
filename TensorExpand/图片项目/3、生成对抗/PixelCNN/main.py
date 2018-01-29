@@ -13,6 +13,17 @@ import argparse
 MNIST = True
 FLAGS=None
 
+parser = argparse.ArgumentParser()
+# 获得buckets路径
+parser.add_argument('--buckets', type=str, default='../MNIST_data',
+                    help='input data path')
+
+# 获得checkpoint路径
+parser.add_argument('--checkpointDir', type=str, default='model',
+                    help='output model path')
+FLAGS, _ = parser.parse_known_args()
+
+
 if MNIST == True:
     from tensorflow.examples.tutorials.mnist import input_data
 
@@ -153,7 +164,7 @@ def train_pixel_cnn():
 
         saver = tf.train.Saver(tf.global_variables())
 
-        for epoch in range(50):
+        for epoch in range(200):
             for batch in range(n_batches):
 
                 if MNIST == True:
@@ -192,19 +203,13 @@ def generate_girl():
         cv2.imwrite('girl.jpg', pics[0])
         print('生成妹子图: girl.jpg')
 
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    # 获得buckets路径
-    parser.add_argument('--buckets', type=str, default='../MNIST_data',
-                        help='input data path')
-
-    # 获得checkpoint路径
-    parser.add_argument('--checkpointDir', type=str, default='model',
-                        help='output model path')
-    FLAGS, _ = parser.parse_known_args()
-
-
+def main(_):
     # 训练
     train_pixel_cnn()
     # 生成图像
     # generate_girl()
+
+if __name__=="__main__":
+
+    tf.app.run(main=main)
+
