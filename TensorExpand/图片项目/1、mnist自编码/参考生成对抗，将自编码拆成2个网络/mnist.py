@@ -182,9 +182,14 @@ def main(_):
     # Dx = discriminator(real_in)  # Produces probabilities for real images [n,1]
     # Dg = discriminator(Gz, reuse=True)  # Produces probabilities for generator images [n,1]
 
-    Ex=encode(real_in,False) # [-1,4,4,64]
-    Dx=decode(Ex,False) # [-1,32,32,1]
-    Dx_=decode(z_in,True) # [-1,32,32,1]
+    # Ex=encode(real_in,False) # [-1,4,4,64]
+    # Dx=decode(Ex,False) # [-1,32,32,1]
+    # Dx_=decode(z_in,True) # [-1,32,32,1]
+
+    Dx_ = decode(z_in, False)  # [-1,32,32,1]
+    Ex = encode(real_in, False)  # [-1,4,4,64]
+    Dx = decode(Ex, True)  # [-1,32,32,1]
+
 
 
 
@@ -192,8 +197,8 @@ def main(_):
     # d_loss = -tf.reduce_mean(tf.log(Dx) + tf.log(1. - Dg))  # This optimizes the discriminator.
     # g_loss = -tf.reduce_mean(tf.log(Dg))  # This optimizes the generator.
     d_loss=tf.losses.mean_squared_error(labels=real_in,predictions=Dx)
-    g_loss=tf.losses.mean_squared_error(labels=Dx,predictions=Dx_)
-    # '''
+    g_loss=tf.losses.mean_squared_error(labels=real_in,predictions=Dx_)
+    '''
     tvars = tf.trainable_variables()
     d_params = [v for v in tvars if v.name.startswith('D/')]
     g_params = [v for v in tvars if v.name.startswith('G/')]
@@ -202,13 +207,13 @@ def main(_):
     trainerG = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
     # d_grads = trainerD.compute_gradients(d_loss,tvars[9:]) #Only update the weights for the discriminator network.
     # g_grads = trainerG.compute_gradients(g_loss,tvars[0:9]) #Only update the weights for the generator network.
-    d_grads = trainerD.compute_gradients(d_loss, d_params+g_params)  # Only update the weights for the discriminator network.
-    g_grads = trainerG.compute_gradients(g_loss, g_params+g_params)  # Only update the weights for the generator network.
+    d_grads = trainerD.compute_gradients(d_loss, d_params)  # Only update the weights for the discriminator network.
+    g_grads = trainerG.compute_gradients(g_loss, g_params)  # Only update the weights for the generator network.
 
     update_D = trainerD.apply_gradients(d_grads)
     update_G = trainerG.apply_gradients(g_grads)
 
-    '''
+    # '''
     trainerD = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
     trainerG = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
 
