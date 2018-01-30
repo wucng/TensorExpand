@@ -37,5 +37,12 @@ loss function: $||f(A)−f(p)||^2+α<=||f(A)−f(N)||^2$
 
 为了方便，只取mnist中的 0,1,2 进行分类
 
+# 转成 二分类问题
 
+![这里写图片描述](http://img.blog.csdn.net/20180130094216961?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)            
+
+![这里写图片描述](http://img.blog.csdn.net/20180130094224139?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)         
+
+验证两张图片是否是同一人，
+将图片进行编码，  在将编码 之差输入到新的神经网络中，同一人输出1，否则0    
 
