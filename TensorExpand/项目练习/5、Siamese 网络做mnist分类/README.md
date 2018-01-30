@@ -46,3 +46,5 @@ loss function: $||f(A)−f(p)||^2+α<=||f(A)−f(N)||^2$
 验证两张图片是否是同一人，
 将图片进行编码，  在将编码 之差输入到新的神经网络中，同一人输出1，否则0    
 
+# 流程图
+![这里写图片描述](http://img.blog.csdn.net/20180130100742411?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)     
