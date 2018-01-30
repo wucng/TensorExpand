@@ -1,4 +1,8 @@
-参考：https://zhuanlan.zhihu.com/p/27697553
+参考：
+
+- https://zhuanlan.zhihu.com/p/27697553
+- https://github.com/Hvass-Labs/TensorFlow-Tutorials
+- https://github.com/thrillerist/TensorFlow-Tutorials
 
 -------
 
