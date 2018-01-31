@@ -7,7 +7,6 @@
 - https://github.com/OlavHN/fast-neural-style
 
 -------
-[VGG16 model](http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz)
 
 
 ## 4.6 什么是神经风格转换？
