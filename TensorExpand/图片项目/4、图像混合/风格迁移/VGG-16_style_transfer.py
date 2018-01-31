@@ -6,6 +6,10 @@
 VGG-16 下载地址:
 https://s3.amazonaws.com/cadl/models/vgg16.tfmodel
 http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz
+
+后续改进想法：
+1、让J(S,G)=J(C,G)
+2、输入的影像为同一张
 '''
 
 from IPython.display import Image, display
