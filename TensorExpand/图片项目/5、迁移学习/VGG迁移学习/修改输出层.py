@@ -54,15 +54,24 @@ with tf.Graph().as_default():
 
         # 修改输出层 传入自己的数据 训练
         y_=tf.placeholder(tf.float32,[None,2])
-        output=tf.layers.dense(fc8_,2,activation=tf.nn.softmax) # [-1,2]
+        with tf.variable_scope('D'):
+            output=tf.layers.dense(fc8_,2,activation=tf.nn.softmax) # [-1,2]
         loss=tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=output)
 
         # train_op=tf.train.AdamOptimizer().minimize(loss)
+        '''
         trainerD = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
         gradients_D = trainerD.compute_gradients(loss)
 
         clipped_gradients_D = [(tf.clip_by_value(_[0], -1, 1), _[1]) for _ in gradients_D]
         train_op = trainerD.apply_gradients(clipped_gradients_D)
+        '''
+        tvars = tf.trainable_variables()
+        d_params = [v for v in tvars if v.name.startswith('D/')]
+        trainerD = tf.train.AdamOptimizer(learning_rate=0.0002, beta1=0.5)
+        d_grads = trainerD.compute_gradients(loss, d_params)#Only update the weights for the discriminator network.
+        train_op = trainerD.apply_gradients(d_grads)
+
 
 
         correct_prediction = tf.equal(tf.argmax(output, 1), tf.argmax(y_, 1))
