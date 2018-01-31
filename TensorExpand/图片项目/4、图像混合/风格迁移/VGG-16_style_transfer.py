@@ -4,6 +4,7 @@
 参考：https://zhuanlan.zhihu.com/p/27697553
 
 VGG-16 下载地址:
+https://s3.amazonaws.com/cadl/models/vgg16.tfmodel
 http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz
 '''
 
