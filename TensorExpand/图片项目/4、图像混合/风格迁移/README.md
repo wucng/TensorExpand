@@ -3,8 +3,12 @@
 - https://zhuanlan.zhihu.com/p/27697553
 - https://github.com/Hvass-Labs/TensorFlow-Tutorials
 - https://github.com/thrillerist/TensorFlow-Tutorials
+- https://github.com/hzy46/fast-neural-style-tensorflow
+- https://github.com/OlavHN/fast-neural-style
 
 -------
+[VGG16 model](http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz)
+
 
 ## 4.6 什么是神经风格转换？
 ![这里写图片描述](http://img.blog.csdn.net/20180130140500567?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)

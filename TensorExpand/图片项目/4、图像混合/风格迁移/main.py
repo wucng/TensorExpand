@@ -2,6 +2,13 @@
 # -*- coding: utf8 -*-
 '''
 参考：https://zhuanlan.zhihu.com/p/27697553
+
+VGG-16 下载地址:
+http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz
+
+后续改进想法：
+1、让J(S,G)=J(C,G)
+2、输入的影像为同一张
 '''
 import tensorflow as tf
 import matplotlib.pyplot as plt
