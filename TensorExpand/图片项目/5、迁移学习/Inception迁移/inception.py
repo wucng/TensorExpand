@@ -563,6 +563,8 @@ def transfer_values_cache(cache_path, model, images=None, image_paths=None):
 
     return transfer_values
 
+def feed_data(model,images=None, image_paths=None):
+    return process_images(fn=model.transfer_values, images=images, image_paths=image_paths)
 
 ########################################################################
 # Example usage.
