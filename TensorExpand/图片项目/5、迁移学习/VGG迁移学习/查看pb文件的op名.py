@@ -23,7 +23,7 @@ def print_ops():
 print_ops()
 
 def print_ops_shape():
-    tensor_name_transfer_layer = "pool_3:0"
+    tensor_name_transfer_layer = "pool5:0"
     graph = tf.Graph()
     with graph.as_default():
         create_graph()

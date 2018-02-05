@@ -126,24 +126,32 @@ with tf.Graph().as_default():
         batch_size = 20
 
         # 加载数据
-        img_path = glob.glob('../hymenoptera_data/train/*/*.jpg')  #
-        imgs = []
-        labels = []
-        for path in img_path:
-            image = np.array(PIL.Image.open(path).resize((224, 224)))
-            imgs.append(image)
-            if path.strip().split('/')[-2] == 'ants':
-                labels.append([0, 1])  # 1
-            else:
-                labels.append([1, 0])  # 0
+        def load_image(image_path):
+            img_path = glob.glob(image_path)  #
+            imgs = []
+            labels = []
+            for path in img_path:
+                image = np.array(PIL.Image.open(path).resize((224, 224)))
+                imgs.append(image)
+                if path.strip().split('/')[-2] == 'ants':
+                    labels.append([0, 1])  # 1
+                else:
+                    labels.append([1, 0])  # 0
 
-        imgs = np.array(imgs)
-        labels = np.array(labels)
+            imgs = np.array(imgs)
+            labels = np.array(labels)
+            return imgs,labels
+
+        imgs, labels=load_image('../../hymenoptera_data/train/*/*.jpg')
         total_batchs = len(imgs) // batch_size
 
         # 开始训练
         for epoch in range(2):
-            np.random.shuffle(imgs)
+            # np.random.shuffle(imgs)
+            index = np.arange(0, len(imgs), dtype=np.int32)
+            np.random.shuffle(index)
+            imgs = imgs[index]
+            labels = labels[index]
             for step in range(total_batchs):
                 batch_x=imgs[step*batch_size:(step+1)*batch_size]
                 batch_y = labels[step * batch_size:(step + 1) * batch_size]
@@ -154,3 +162,11 @@ with tf.Graph().as_default():
                 if step%10==0:
                     acc=sess.run(accuracy,feed_dict)
                     print('epoch',epoch,'|','step',step,'|','acc',acc)
+
+        # test
+        imgs_test, labels_test = load_image('../../hymenoptera_data/val/*/*.jpg')
+
+        feed_dict = create_feed_dict(imgs_test[:10])
+        feed_dict[y_] = labels_test[:10]
+        pred_y = sess.run(output, feed_dict)
+        print('pred:', np.argmax(pred_y, 1), '\n', 'real:', np.argmax(labels_test[:10], 1))
