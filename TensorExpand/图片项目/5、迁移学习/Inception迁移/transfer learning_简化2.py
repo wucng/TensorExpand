@@ -99,7 +99,7 @@ with tf.Graph().as_default():
             imgs = []
             labels = []
             for path in img_path:
-                image = np.array(PIL.Image.open(path).resize((224, 224)))
+                image = np.array(PIL.Image.open(path).resize((299, 299)))
                 imgs.append(image)
                 if path.strip().split('/')[-2] == 'ants':
                     labels.append([0, 1])  # 1

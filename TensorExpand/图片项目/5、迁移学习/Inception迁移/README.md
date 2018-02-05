@@ -8,6 +8,8 @@
 ----------
 当新数据集里的所有图像都用Inception处理过，并且生成的transfer-values都保存到缓存文件之后，我们可以将这些transfer-values作为其它神经网络的输入。接着训练第二个神经网络，用来分类新的数据集，因此，网络基于Inception模型的transfer-values来学习如何分类图像。
 
+Inception 输入大小 299x299
+
 ![这里写图片描述](https://pic2.zhimg.com/80/v2-598e98856a8e6af4950fc829ca3d923e_hd.jpg)
 
 # 基本流程图
