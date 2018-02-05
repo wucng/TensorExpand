@@ -375,6 +375,7 @@ class Inception:
         # pred = self.session.run(self.y_logits, feed_dict=feed_dict)
 
 
+
         # Reduce the array to a single dimension.
         pred = np.squeeze(pred)
 
@@ -464,10 +465,10 @@ class Inception:
         # Use TensorFlow to run the graph for the Inception model.
         # This calculates the values for the last layer of the Inception model
         # prior to the softmax-classification, which we call transfer-values.
-        transfer_values = self.session.run(self.transfer_layer, feed_dict=feed_dict) # [1,1,1,2048]
+        transfer_values = self.session.run(self.transfer_layer, feed_dict=feed_dict)
 
         # Reduce to a 1-dim array.
-        transfer_values = np.squeeze(transfer_values) # [2048,]
+        transfer_values = np.squeeze(transfer_values)
 
         return transfer_values
 
