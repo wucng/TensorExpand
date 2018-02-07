@@ -43,6 +43,7 @@ with tf.Graph().as_default():
         # fc8_ = sess.graph.get_tensor_by_name(fc8) # (?, 1000)
 
         input2x=sess.graph.get_tensor_by_name(tensor_name_transfer_layer) # (?, 2048)
+        input2x=tf.stop_gradient(input2x) # 不进行梯度更新（参数不更新）
 
         # prob_=sess.graph.get_tensor_by_name(prob)
         # print(tensor_name_input_image_.shape,'\n',tensor_name_dropout_.shape,'\n',tensor_name_dropout1_.shape,
