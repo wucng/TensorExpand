@@ -11,7 +11,7 @@
 
 我们以前在教程＃08和＃09中看到了如何使用所谓的转移学习在新的数据集上使用预先训练的神经网络，方法是将原始模型的输出重新路由到分类层之前， 我们创建了一个新的分类器。 由于原来的模型是“冻结的”，它的权重不能被进一步优化，所以模型中所有前面的层次所学的东西，都不能被微调到新的数据集。
 
-本教程演示如何使用Keras API进行Tensorflow的Transfer Learning和Fine-Tuning。 我们将再次使用Tutorial＃09中介绍的Knifey-Spoony数据集。 我们以前使用的是Inception v3模型，但是我们将在本教程中使用VGG16模型，因为它的架构更易于使用。
+**本教程演示如何使用Keras API进行Tensorflow的Transfer Learning和Fine-Tuning**。 我们将再次使用Tutorial＃09中介绍的Knifey-Spoony数据集。 我们以前使用的是Inception v3模型，但是我们将在本教程中使用VGG16模型，因为它的架构更易于使用。
 
 注：使用2.6 GHz CPU和GTX 1070 GPU的笔记本电脑上执行此笔记本大约需要15分钟。 在CPU上运行它估计需要大约10个小时！
 

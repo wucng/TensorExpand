@@ -36,6 +36,9 @@ cd ~
 mkdir -p  .keras/models
 在 https://github.com/fchollet/deep-learning-models/releases/ 下载
 vgg16_weights_tf_dim_ordering_tf_kernels.h5
+
+下载 https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json 复制到 ~/.keras/models
+
 '''
 
 # Keras API有自己的创建输入流水线的方法来使用文件来训练模型。

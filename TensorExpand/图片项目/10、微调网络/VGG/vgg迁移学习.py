@@ -48,8 +48,10 @@ VGG16模型包含卷积部分和用于分类的完全连接（或密集）部分
 我们将尝试使用预先训练的模型来预测新数据集中某些图像的类别，因此我们必须下载完整模型，
 但是如果您的网络连接速度较慢，则可以修改以下代码以使用 较小的预先训练的模型，不需要分类层。
 '''
-# 迁移学习只用到卷积层部分，include_top=False
-model = VGG16(include_top=False, weights='imagenet') # 模型下载到 ~/.keras/models
+# 迁移学习只用到卷积层部分 理论上include_top=False 可行 (include_top=False 后面会报错 不知道为什么？)
+model = VGG16(include_top=True, weights='imagenet')
+
+# 模型下载到 ~/.keras/models
 # 手动下载模型 并存储在 ~/.keras/models （目录下）
 '''
 cd ~
