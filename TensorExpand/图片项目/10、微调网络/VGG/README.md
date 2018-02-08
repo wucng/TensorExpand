@@ -26,7 +26,7 @@
 
 # 迁移学习与网络微调
 
-![这里写图片描述](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E5%9B%BE%E7%89%87%E9%A1%B9%E7%9B%AE/10%E3%80%81%E5%BE%AE%E8%B0%83%E7%BD%91%E7%BB%9C/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BE%AE%E8%B0%83.png)
+![这里写图片描述](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/%E5%9B%BE%E7%89%87%E9%A1%B9%E7%9B%AE/10%E3%80%81%E5%BE%AE%E8%B0%83%E7%BD%91%E7%BB%9C/VGG/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%BE%AE%E8%B0%83.png)
 
 # 结论
 '''
