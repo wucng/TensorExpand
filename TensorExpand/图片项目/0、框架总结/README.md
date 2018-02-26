@@ -5,6 +5,7 @@
 	- keras API
 	- Estimator API 
 	- slim API
+- PrettyTensor
 - tflearn
 - tensorlayers
 
