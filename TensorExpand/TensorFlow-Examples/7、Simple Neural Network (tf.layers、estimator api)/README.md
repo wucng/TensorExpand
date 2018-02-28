@@ -1,0 +1,1 @@
+使用TensorFlow'layers'和'estimator'API来构建一个简单的神经网络（又称多层感知器）来对MNIST数字数据集进行分类。
