@@ -217,6 +217,7 @@ class ShapesDataset(utils.Dataset):
 
         # images=np.asarray(images,np.float32) # [h,w,c]
         mask = np.asarray(mask, np.uint8).transpose([1, 2, 0])  # [h,w,instance count]
+        class_id = np.asarray(class_id, np.uint8)  # [instance count,]
 
         # Handle occlusions 处理遮挡情况
         count = mask.shape[-1]
@@ -224,8 +225,11 @@ class ShapesDataset(utils.Dataset):
         for i in range(count - 2, -1, -1):
             mask[:, :, i] = mask[:, :, i] * occlusion
             occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
-
-        class_id = np.asarray(class_id, np.uint8)  # [instance count,]
+            # 如果mask 全为0 也就是意味着完全被遮挡，需丢弃这种mask，否则训练会报错
+            # （而实际标准mask时不会出现这种情况的，因为完全遮挡了没办法标注mask）
+            if np.sum(mask[:, :, i]) < 1:  # 完全被遮挡
+                mask = np.delete(mask, i, axis=-1)
+                class_id = np.delete(class_id, i)  # 对应的mask的class id 也需删除
         return image, mask, class_id
 
 
@@ -283,10 +287,10 @@ if train == 1:
     # Passing layers="heads" freezes all layers except the head
     # layers. You can also pass a regular expression to select
     # which layers to train by name pattern.
-    '''
+    # '''
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=1,
+                epochs=4,
                 layers='heads')
     '''
 

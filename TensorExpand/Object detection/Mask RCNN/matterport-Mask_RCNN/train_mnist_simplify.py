@@ -150,11 +150,16 @@ class ShapesDataset(utils.Dataset):
             mask = np.asarray(mask).transpose([1, 2, 0])  # mask shape [128,128,16]
 
             # Handle occlusions 处理遮挡情况
-            count=mask.shape[-1]
+            count = mask.shape[-1]
             occlusion = np.logical_not(mask[:, :, -1]).astype(np.uint8)
             for i in range(count - 2, -1, -1):
                 mask[:, :, i] = mask[:, :, i] * occlusion
                 occlusion = np.logical_and(occlusion, np.logical_not(mask[:, :, i]))
+                # 如果mask 全为0 也就是意味着完全被遮挡，需丢弃这种mask，否则训练会报错
+                # （而实际标准mask时不会出现这种情况的，因为完全遮挡了没办法标注mask）
+                if np.sum(mask[:, :, i]) < 1:  # 完全被遮挡
+                    mask = np.delete(mask, i, axis=-1)
+                    class_ids = np.delete(class_ids, i)  # 对应的mask的class id 也需删除
 
             self.add_image("shapes", image_id=i, path=None,
                            width=width, height=height,
