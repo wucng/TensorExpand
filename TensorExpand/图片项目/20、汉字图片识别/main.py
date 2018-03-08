@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--epochs", help="The number of iterations", type=int, default=100) # 迭代次数
 parser.add_argument("-b", "--batch_size", help="number of records per batch", type=int, default=256) # 每步训练的样本数
 parser.add_argument("-lr", "--learning_rate", help="learning rate", type=float, default=1e-4) # 学习效率
-parser.add_argument("-k", "--keep", help="keep rate", type=float, default=0.8) # dropout out保持率
+parser.add_argument("-k", "--keep", help="keep rate", type=float, default=0.6) # dropout out保持率
 parser.add_argument("-m", "--mode", help="1 train,0 test", type=int, default=1) # 模式，训练or测试
 parser.add_argument("-ld", "--logdir", help="model save path", type=str, default='./checkpoint/') # 模型参数保存位置
 
