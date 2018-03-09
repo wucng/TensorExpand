@@ -76,6 +76,23 @@ def random_image( height, width):
 
     return image,mask,class_id
 
+def mask2box(mask):
+    '''从mask反算出其边框
+    mask：[h,w]  0、1组成的图片
+    1对应对象，只需计算1对应的行列号（左上角行列号，右下角行列号，就可以算出其边框）
+    '''
+    # np.where(mask==1)
+    rows,clos=np.argwhere(mask==1)
+    # 解析左上角行列号
+    left_top_r=np.min(rows)
+    left_top_c = np.min(clos)
+
+    # 解析右下角行列号
+    right_bottom_r=np.max(rows)
+    right_bottom_c = np.max(clos)
+
+    return [(left_top_r,left_top_c),(right_bottom_r,right_bottom_c)]
+
 image,mask,class_id=random_image(128,128)
 
 print(class_id)
@@ -85,6 +102,9 @@ plt.imshow(image)
 plt.axis('off')
 for i in range(len(class_id)):
     plt.subplot(1, len(class_id) + 1, i+2)
+    print(mask[:,:,i].shape)
+    pt=mask2box(mask[:,:,i])
+    cv2.rectangle(mask[:,:,i],pt[0],pt[1],255)
     plt.imshow(mask[:,:,i])
     plt.axis('off')
     plt.title(class_id[i])
