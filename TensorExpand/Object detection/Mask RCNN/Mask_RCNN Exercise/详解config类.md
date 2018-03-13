@@ -11,6 +11,19 @@ NAME = None # 子类中覆盖
 # 如 NAME='shapes'
 ```
 
+----------
+```python
+# 输入图像resing
+# 图像被调整大小，使得最小的边> = IMAGE_MIN_DIM和
+# 最长边是<= IMAGE_MAX_DIM。 如果两种情况都不能
+# 一起满足IMAGE_MAX_DIM被执行。
+IMAGE_MIN_DIM = 800
+IMAGE_MAX_DIM = 1024
+
+# 例如
+IMAGE_MIN_DIM =128
+IMAGE_MAX_DIM =128
+```
 
 ----------
 
@@ -29,7 +42,7 @@ IMAGES_PER_GPU = 2
 
 # 例如 4G GPU 128x128
 # 4=128*128*n;12=1024*1024*2 ==>n=1024*1024*2*4//(128*128*12)=42
-IMAGES_PER_GPU= 30
+IMAGES_PER_GPU= int(1024*1024*4//(IMAGE_MAX_DIM*IMAGE_MAX_DIM*12)*(2/3))
 ```
 
 
@@ -151,19 +164,6 @@ MINI_MASK_SHAPE =(56//scale,56//scale)
 
 
 ----------
-
-```python
-# 输入图像resing
-# 图像被调整大小，使得最小的边> = IMAGE_MIN_DIM和
-# 最长边是<= IMAGE_MAX_DIM。 如果两种情况都不能
-# 一起满足IMAGE_MAX_DIM被执行。
-IMAGE_MIN_DIM = 800
-IMAGE_MAX_DIM = 1024
-
-# 例如
-IMAGE_MIN_DIM =128
-IMAGE_MAX_DIM =128
-```
 
 
 ----------
