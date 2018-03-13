@@ -11,6 +11,8 @@
 ----------
 # MaskRCNN识别Pascal VOC 2007
 
+完整程序在[这里](https://github.com/fengzhongyouxia/TensorExpand/tree/master/TensorExpand/Object%20detection/Mask%20RCNN/Mask_RCNN%20Exercise)
+
 ------
 
 # Pascal VOC 2007数据下载
@@ -22,7 +24,7 @@ wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar
 ```
 
 ```python
-# 将所有这些解压到一个名为VOCdevkit的目录中
+# 执行以下命令将解压到一个名为VOCdevkit的目录中
 tar xvf VOCtrainval_06-Nov-2007.tar
 tar xvf VOCtest_06-Nov-2007.tar
 tar xvf VOCdevkit_08-Jun-2007.tar
@@ -125,6 +127,7 @@ def analyze_xml_class(file_names,class_name = []):
 
 ```python
 for num,path in enumerate(Object_path):
+
     # 进度输出
     sys.stdout.write('\r>> Converting image %d/%d' % (
         num + 1, len(Object_path)))
@@ -144,10 +147,30 @@ for num,path in enumerate(Object_path):
                                                                       rectangle[0]:rectangle[2]]
 
         # 计算矩形中点像素值
-        x_=(rectangle[0]+rectangle[2])//2
-        y_=(rectangle[1]+rectangle[3])//2
-        pixels = mask_1[y_, x_]
-        mask=(mask==pixels).astype(np.uint8)
+        mean_x=(rectangle[0]+rectangle[2])//2
+        mean_y=(rectangle[1]+rectangle[3])//2
+
+        end=min((mask.shape[1],int(rectangle[2])+1))
+        start=max((0,int(rectangle[0])-1))
+
+        flag=True
+        for i in range(mean_x,end):
+            x_=i;y_=mean_y
+            pixels = mask_1[y_, x_]
+            if pixels!=0 and pixels!=220: # 0 对应背景 220对应边界线
+                mask=(mask==pixels).astype(np.uint8)
+                flag=False
+                break
+        if flag:
+            for i in range(mean_x,start,-1):
+                x_ = i;y_ = mean_y
+                pixels = mask_1[y_, x_]
+                if pixels != 0 and pixels != 220:
+                    mask = (mask == pixels).astype(np.uint8)
+                    break
+
+        # 统一大小 64*n
+        # mask=cv2.resize(mask,(h,w)) # 后面进行统一缩放
 
         masks.append(mask)
     # mask转成[h,w,m]格式
@@ -160,79 +183,82 @@ for num,path in enumerate(Object_path):
     mask_1=None
 
     # images 原图像
-    image = cv2.imread(os.path.join(Image_path, file_name + '.jpg')) #/ 255.  程序内部会自动进行归一化处理
+    image = cv2.imread(os.path.join(Image_path, file_name + '.jpg'))
+    # image = cv2.resize(image, (h, w)) # /255.  # 不需要转到0.~1. 程序内部会自动进行归一化处理
+
+    # 图像与mask都进行缩放
+    image, _, scale, padding=resize_image(image, min_dim=IMAGE_MIN_DIM, max_dim=IMAGE_MAX_DIM, padding=True)
+    masks=resize_mask(masks, scale, padding)
+
+    '''
+    # 可视化结果
+    num_masks=masks.shape[-1]
+    for i in range(num_masks):
+        plt.subplot(1,num_masks+1,i+2)
+        plt.imshow(masks[:,:,i],'gray')
+        plt.axis('off')
+        plt.title(class_name_dict[class_id[i]])
+
+    plt.subplot(1, num_masks + 1, 1)
+    plt.imshow(image)
+    plt.axis('off')
+    plt.show()
+    # '''
 
     object_data.append([image,masks,class_id])
-    if num%200==0:
+    if num>0 and num%200==0:
         with open('./data/data_'+str(num)+'.pkl','wb') as fp:
             pickle.dump(object_data,fp)
             object_data=[]
+            object_data.append([class_dict])
 
-    if num==len(Object_path) and object_data!=None:
+    if num==len(Object_path)-1 and object_data!=None:
         with open('./data/data_' + str(num) + '.pkl', 'wb') as fp:
             pickle.dump(object_data, fp)
-            object_data = []
+            object_data = None
 
 sys.stdout.write('\n')
 sys.stdout.flush()
+
 ```
 
 # 重写ShapesConfig类
 
 ```python
 class ShapesConfig(Config):
-    """Configuration for training on the toy shapes dataset.
-    Derives from the base Config class and overrides values specific
-    to the toy shapes dataset.
-    玩具形状数据集的训练配置。
-     派生自基础Config类并覆盖特定值
-     到玩具形状数据集。
-    """
-    # Give the configuration a recognizable name
-    # 给配置一个可识别的名字
+    # 命名配置
     NAME = "shapes"
 
-    # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
-    # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-    # 训练1个GPU和每个GPU 8个图像。 我们可以在每个上放置多个图像
-    # GPU，因为图像很小。 批量大小为8(GPUs * images/GPU)。
-    GPU_COUNT = 1
-    IMAGES_PER_GPU = 4
-    # batch_size=GPU_COUNT*IMAGES_PER_GPU
-
-    # Number of classes (including background)
-    # 类别数量（包括背景）
-    NUM_CLASSES = 1 + 20  # background + 3 shapes
-
-    # Use small images for faster training. Set the limits of the small side
-    # 使用小图像进行更快速的训练。 设置小方面的限制
-    # the large side, and that determines the image shape.
-    # 大的一面，这决定了图像的形状。
+    # 输入图像resing
     IMAGE_MIN_DIM = 512
     IMAGE_MAX_DIM = 512
 
-    # IMAGE_SHAPE=[128,128,1] # 这样修改通道数没有效果，需进入`config.py` 去修改才行
+    # 使用的GPU数量。 对于CPU训练，请使用1
+    GPU_COUNT = 1
 
-    # Use smaller anchors because our image and objects are small
-    # 使用较小的锚点是因为我们的图像和对象很小
-    scale=IMAGE_MIN_DIM//128
-    RPN_ANCHOR_SCALES = (8*scale, 16*scale, 32*scale, 64*scale, 128*scale)  # anchor side in pixels
+    IMAGES_PER_GPU = int(1024 * 1024 * 4 // (IMAGE_MAX_DIM * IMAGE_MAX_DIM * 12))+1
 
-    # Reduce training ROIs per image because the images are small and have
-    # 由于图像很小，因此减少了每个图像的训练ROI
-    # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    # 几件物品。 旨在允许ROI采样选择33％的正面投资回报率。
-    TRAIN_ROIS_PER_IMAGE =32  # 32
+    batch_size = GPU_COUNT * IMAGES_PER_GPU
+    STEPS_PER_EPOCH = int(train_images / batch_size * (3 / 4))
 
-    RPN_ANCHOR_STRIDE = 1
+    VALIDATION_STEPS = STEPS_PER_EPOCH // (1000 // 50)
 
-    # Use a small epoch since the data is simple
-    # 因为数据很简单，所以使用一个epoch
-    STEPS_PER_EPOCH = train_images//(GPU_COUNT*IMAGES_PER_GPU)
+    NUM_CLASSES = 1 + 20  # 必须包含一个背景（背景作为一个类别）
 
-    # use small validation steps since the epoch is small
-    # 由于epoch 很小，因此使用小的验证步骤
-    VALIDATION_STEPS = 5
+    scale = 1024 // IMAGE_MAX_DIM
+    RPN_ANCHOR_SCALES = (32 // scale, 64 // scale, 128 // scale, 256 // scale, 512 // scale)  # anchor side in pixels
+
+    RPN_NMS_THRESHOLD = 0.6  # 0.6
+
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 256 // scale
+
+    MINI_MASK_SHAPE = (56 // scale, 56 // scale)
+
+    TRAIN_ROIS_PER_IMAGE = 200 // scale
+
+    DETECTION_MAX_INSTANCES = 100 * scale * 2 // 3
+
+    DETECTION_MIN_CONFIDENCE = 0.6
 ```
 
 # 重写ShapesDataset类
@@ -247,12 +273,19 @@ class ShapesDataset(utils.Dataset):
     def load_shapes(self, count, height, width):
         data=self.load_pkl()
         class_dict=data[0][0] # 所有类别字典 从1开始
-        # self.add_class("shapes", 0, 'BG') # 标签0默认为背景
+        # self.add_class("shapes", 0, 'BG') # 标签0默认为背景 utils中已经添加了 这里不用再添加
+
         # self.add_class("shapes", 1, "square")
         # self.add_class("shapes", 2, "circle")
         # self.add_class("shapes", 3, "triangle")
-        class_dict.keys()
-        [self.add_class('shapes',class_dict[i],i) for i in list(class_dict.keys())]
+        # 必须从1、2、3、……开始添加，否则会出错 ，下面这种情况会导致标签对不上
+        # [self.add_class('shapes',class_dict[i],i) for i in list(class_dict.keys())] # 无序添加会导致标签对应不上
+
+        # class id反算出class name
+        class_name_dict = dict(zip(class_dict.values(), class_dict.keys()))
+
+        [self.add_class('shapes',i,class_name_dict[i]) for i in range(1,21)] # 共20类
+
 
         '''
         for i in range(count):
@@ -366,3 +399,11 @@ class ShapesDataset(utils.Dataset):
             data = pickle.load(fp)
         return data
 ```
+
+# 最终结果
+
+mAP:  0.6333333358168602
+
+![这里写图片描述](http://img.blog.csdn.net/20180313163353833?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+![这里写图片描述](http://img.blog.csdn.net/20180313163405498?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)

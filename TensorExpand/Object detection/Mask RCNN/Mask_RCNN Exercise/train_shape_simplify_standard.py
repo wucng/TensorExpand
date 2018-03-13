@@ -41,7 +41,7 @@ train = 1 # 1 train;0 test
 
 # mnist = read_data_sets('./MNIST_data', one_hot=False)
 
-train_images=500
+train_images=500 # 训练样本数
 # Root directory of the project
 ROOT_DIR = os.getcwd()
 
@@ -56,59 +56,39 @@ if not os.path.exists(COCO_MODEL_PATH):
 
 
 class ShapesConfig(Config):
-    """Configuration for training on the toy shapes dataset.
-    Derives from the base Config class and overrides values specific
-    to the toy shapes dataset.
-    玩具形状数据集的训练配置。
-     派生自基础Config类并覆盖特定值
-     到玩具形状数据集。
-    """
-    # Give the configuration a recognizable name
-    # 给配置一个可识别的名字
+    # 命名配置
     NAME = "shapes"
 
-    # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
-    # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-    # 训练1个GPU和每个GPU 8个图像。 我们可以在每个上放置多个图像
-    # GPU，因为图像很小。 批量大小为8(GPUs * images/GPU)。
-    GPU_COUNT = 1   # 看情况修改
-    IMAGES_PER_GPU = 4 # 看情况修改
-    # batch_size=GPU_COUNT*IMAGES_PER_GPU
+    # 输入图像resing
+    IMAGE_MIN_DIM = 512
+    IMAGE_MAX_DIM = 512
 
-    # Number of classes (including background)
-    # 类别数量（包括背景）
-    NUM_CLASSES = 1 + 3  # background + 3 shapes # 看情况修改
+    # 使用的GPU数量。 对于CPU训练，请使用1
+    GPU_COUNT = 1
 
-    # Use small images for faster training. Set the limits of the small side
-    # 使用小图像进行更快速的训练。 设置小方面的限制
-    # the large side, and that determines the image shape.
-    # 大的一面，这决定了图像的形状。
-    IMAGE_MIN_DIM = 512 # 看情况修改
-    IMAGE_MAX_DIM = 512 # 看情况修改
+    IMAGES_PER_GPU = int(1024 * 1024 * 4 // (IMAGE_MAX_DIM * IMAGE_MAX_DIM * 12))+1
 
-    # IMAGE_SHAPE=[128,128,1] # 这样修改通道数没有效果，需进入`config.py` 去修改才行
+    batch_size = GPU_COUNT * IMAGES_PER_GPU
+    STEPS_PER_EPOCH = int(train_images / batch_size * (3 / 4))
 
-    # Use smaller anchors because our image and objects are small
-    # 使用较小的锚点是因为我们的图像和对象很小
-    scale=IMAGE_MIN_DIM//128
-    RPN_ANCHOR_SCALES = (8*scale, 16*scale, 32*scale, 64*scale, 128*scale)  # anchor side in pixels
+    VALIDATION_STEPS = STEPS_PER_EPOCH // (1000 // 50)
 
-    # Reduce training ROIs per image because the images are small and have
-    # 由于图像很小，因此减少了每个图像的训练ROI
-    # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    # 几件物品。 旨在允许ROI采样选择33％的正面投资回报率。
-    TRAIN_ROIS_PER_IMAGE = 32#*scale #32
+    NUM_CLASSES = 1 + 3  # 必须包含一个背景（背景作为一个类别）
 
-    RPN_ANCHOR_STRIDE = 1
+    scale = 1024 // IMAGE_MAX_DIM
+    RPN_ANCHOR_SCALES = (32 // scale, 64 // scale, 128 // scale, 256 // scale, 512 // scale)  # anchor side in pixels
 
-    # Use a small epoch since the data is simple
-    # 因为数据很简单，所以使用一个epoch
-    STEPS_PER_EPOCH = train_images//(GPU_COUNT*IMAGES_PER_GPU)
+    RPN_NMS_THRESHOLD = 0.6  # 0.6
 
-    # use small validation steps since the epoch is small
-    # 由于epoch 很小，因此使用小的验证步骤
-    VALIDATION_STEPS = 5 # 看情况修改
+    RPN_TRAIN_ANCHORS_PER_IMAGE = 256 // scale
 
+    MINI_MASK_SHAPE = (56 // scale, 56 // scale)
+
+    TRAIN_ROIS_PER_IMAGE = 200 // scale
+
+    DETECTION_MAX_INSTANCES = 100 * scale * 2 // 3
+
+    DETECTION_MIN_CONFIDENCE = 0.6
 
 config = ShapesConfig()
 # config.display() # 显示细节信息

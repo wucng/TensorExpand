@@ -42,7 +42,7 @@ IMAGES_PER_GPU = 2
 
 # 例如 4G GPU 128x128
 # 4=128*128*n;12=1024*1024*2 ==>n=1024*1024*2*4//(128*128*12)=42
-IMAGES_PER_GPU= int(1024*1024*4//(IMAGE_MAX_DIM*IMAGE_MAX_DIM*12)*(2/3))
+IMAGES_PER_GPU= int(1024*1024*4//(IMAGE_MAX_DIM*IMAGE_MAX_DIM*12))+1
 ```
 
 
@@ -54,7 +54,7 @@ STEPS_PER_EPOCH = 1000
 
 # num_images 图像数
 batch_size=GPU_COUNT *IMAGES_PER_GPU
-STEPS_PER_EPOCH =int(num_images/batch_size*(2/3))
+STEPS_PER_EPOCH =int(num_images/batch_size*(3/4))
 ```
 
 
@@ -237,7 +237,7 @@ BBOX_STD_DEV = np.array（[0.1,0.1,0.2,0.2]） # 不变
 
 ```python
 # 最大检测次数
-DETECTION_MAX_INSTANCES = 100
+DETECTION_MAX_INSTANCES = 100 # 不变
 
 # 例如
 scale=1024//IMAGE_MIN_DIM
@@ -260,7 +260,7 @@ DETECTION_MIN_CONFIDENCE = 0.6
 
 ```python
 # 检测的非最大抑制阈值
-DETECTION_NMS_THRESHOLD = 0.3
+DETECTION_NMS_THRESHOLD = 0.3 # 不变
 ```
 
 
@@ -269,8 +269,8 @@ DETECTION_NMS_THRESHOLD = 0.3
 ```python
 # 学习效率和动力
 # Mask RCNN文件使用lr = 0.02，但在TensorFlow上引起权重爆炸。 可能由于优化器的差异执行。
-LEARNING_RATE = 0.001
-LEARNING_MOMENTUM = 0.9
+LEARNING_RATE = 0.001  # 不变
+LEARNING_MOMENTUM = 0.9 # 不变
 ```
 
 
@@ -278,7 +278,7 @@ LEARNING_MOMENTUM = 0.9
 
 ```python
 # 重量衰减正则化
-WEIGHT_DECAY = 0.0001
+WEIGHT_DECAY = 0.0001 # 不变
 ```
 
 
@@ -288,7 +288,7 @@ WEIGHT_DECAY = 0.0001
 # 使用RPN投资回报率或外部生成的投资回报率进行训练
 # 在大多数情况下保持真实。 如果您想训练，请设置为False
 # 由代码生成的ROI分支，而不是来自ROI的ROIRPN。 例如，调试分类器头，而不必训练RPN。
-USE_RPN_ROIS = True
+USE_RPN_ROIS = True # 不变
 ```
 
 
