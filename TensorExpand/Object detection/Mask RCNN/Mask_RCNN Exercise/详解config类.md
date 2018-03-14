@@ -116,6 +116,9 @@ RPN_ANCHOR_RATIOS = [0.5,1,2] # 不变
 # 如果为1，则为骨干特征映射中的每个单元创建锚点。
 # 如果是2，则为每个其他单元格创建锚点，依此类推。
 RPN_ANCHOR_STRIDE = 1 # 不变
+
+# 或
+RPN_ANCHOR_STRIDE = 2
 ```
 
 
@@ -125,6 +128,9 @@ RPN_ANCHOR_STRIDE = 1 # 不变
 # 过滤RPN提议的非最大抑制阈值。
 # 你可以在训练过程中减少这些以产生更多的提议。
 RPN_NMS_THRESHOLD = 0.7  # 0.6
+
+# 或
+RPN_NMS_THRESHOLD = 0.8
 ```
 
 
@@ -252,7 +258,7 @@ DETECTION_MAX_INSTANCES =100*scale*2//3
 DETECTION_MIN_CONFIDENCE = 0.7
 
 # 例如
-DETECTION_MIN_CONFIDENCE = 0.6
+DETECTION_MIN_CONFIDENCE = 0.8
 ```
 
 
