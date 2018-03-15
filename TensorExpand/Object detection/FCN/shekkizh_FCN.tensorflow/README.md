@@ -218,12 +218,15 @@ class ShapesDataset(object):
 ```
 
 
-3、# 数据显示
+# 3、数据显示
 ##1、image 
+
 shape [224,224,3] 像素值0~255 
+
 ![这里写图片描述](http://img.blog.csdn.net/20180315111720695?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 ##2、mask 
+
 shape[224,224] 像素值0、1、2、3
 
 0为背景 1为矩形 2为圆 3为三角形
@@ -232,7 +235,9 @@ shape[224,224] 像素值0、1、2、3
 
 
 # 4、改写FCN.py
+
 FCN_my_data.py
+
 ```python
 
 '''
