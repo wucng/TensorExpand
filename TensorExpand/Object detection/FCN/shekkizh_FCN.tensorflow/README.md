@@ -4,6 +4,8 @@
 - [shekkizh/FCN.tensorflow](https://github.com/shekkizh/FCN.tensorflow)
 - [aurora95/Keras-FCN](https://github.com/aurora95/Keras-FCN)
 - [wkentaro/pytorch-fcn](https://github.com/wkentaro/pytorch-fcn)
+- [CSAILVision/sceneparsing](https://github.com/CSAILVision/sceneparsing)
+- [hangzhaomit/semantic-segmentation-pytorch](https://github.com/hangzhaomit/semantic-segmentation-pytorch)
 
 ------
 用于语义分割的全卷积网络的Tensorflow实现（http://fcn.berkeleyvision.org）
@@ -62,6 +64,9 @@
 作者在论文[链接](http://techtalks.tv/talks/fully-convolutional-networks-for-semantic-segmentation/61606/)上给出的演示视频
 
 
+# 流程图
+![这里写图片描述](https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/Object%20detection/FCN/shekkizh_FCN.tensorflow/FCN-tensorflow/FCN.png)
+
 # 实践
 1、git项目
 
@@ -69,7 +74,7 @@
 git clone https://github.com/shekkizh/FCN.tensorflow.git
 ```
 2、传入自己的数据
-
+shape_data.py
 ```python
 # -*- coding:utf-8 -*-
 #!/usr/bin/env python
@@ -212,8 +217,22 @@ class ShapesDataset(object):
         return image, gt_boxes, mask, mask_
 ```
 
-3、改写FCN.py
 
+3、# 数据显示
+##1、image 
+shape [224,224,3] 像素值0~255 
+![这里写图片描述](http://img.blog.csdn.net/20180315111720695?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+##2、mask 
+shape[224,224] 像素值0、1、2、3
+
+0为背景 1为矩形 2为圆 3为三角形
+
+![这里写图片描述](http://img.blog.csdn.net/20180315111946039?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+
+# 4、改写FCN.py
+FCN_my_data.py
 ```python
 
 '''
@@ -234,3 +253,11 @@ class ShapesDataset(object):
 
     # ---------------------------------------------#
 ```
+
+# 5、运行
+```python
+# 执行
+python3 FCN_my_data.py
+```
+
+可视化结果执行：`python3 FCN_my_data.py --mode visualize`

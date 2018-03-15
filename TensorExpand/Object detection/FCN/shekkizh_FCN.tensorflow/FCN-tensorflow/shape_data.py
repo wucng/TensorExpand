@@ -30,6 +30,7 @@ class ShapesDataset(object):
 
     def load_shapes(self, count, height, width):
         for i in range(count):
+            # comb_image像素取值 0~255（后续程序会做归一化） mask_像素取值0、1、2、3、……（n个类别，n>=1）不需归一化处理
             comb_image, _, _, mask_ = self.random_image(height, width)
             self.add_image(f=comb_image, annotation_file=mask_)
 

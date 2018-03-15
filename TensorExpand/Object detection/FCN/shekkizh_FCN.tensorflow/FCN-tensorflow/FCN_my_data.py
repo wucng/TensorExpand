@@ -15,7 +15,7 @@ FLAGS = tf.flags.FLAGS
 tf.flags.DEFINE_integer("batch_size", "2", "batch size for training") # 每个batch训练的图像数
 tf.flags.DEFINE_string("logs_dir", "logs/", "path to logs directory") # 日志目录
 tf.flags.DEFINE_string("data_dir", "Data_zoo/MIT_SceneParsing/", "path to dataset") # 数据路径
-tf.flags.DEFINE_float("learning_rate", "1e-4", "Learning rate for Adam Optimizer")
+tf.flags.DEFINE_float("learning_rate", "1e-5", "Learning rate for Adam Optimizer")
 tf.flags.DEFINE_string("model_dir", "Model_zoo/", "Path to vgg model mat") # 下载的VGG模型放置的位置
 tf.flags.DEFINE_bool('debug', "False", "Debug mode: True/ False") # debug标志可以在训练期间设置以添加关于激活，梯度，变量等的信息。
 tf.flags.DEFINE_string('mode', "train", "Mode train/ test/ visualize") # visualize 显示随机批次图像结果
@@ -23,7 +23,7 @@ tf.flags.DEFINE_string('mode', "train", "Mode train/ test/ visualize") # visuali
 MODEL_URL = 'http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat' # VGG19预训练的模型参数
 
 MAX_ITERATION = int(1e5 + 1) # 最大迭代次数
-NUM_OF_CLASSESS = 151 # 类别数
+NUM_OF_CLASSESS = 4 # 151 # 类别数 算上背景4个类别 1+3（背景默认为0 必须算上）
 IMAGE_SIZE = 224 # 图像大小
 
 train_images_num=500
@@ -125,11 +125,18 @@ def inference(image, keep_prob):
         conv_t2 = utils.conv2d_transpose_strided(fuse_1, W_t2, b_t2, output_shape=tf.shape(image_net["pool3"])) # [n,28,28,256]
         fuse_2 = tf.add(conv_t2, image_net["pool3"], name="fuse_2") # [n,28,28,256]
 
+        '''
         shape = tf.shape(image) # [n,224,224,3]
+        # shape=image.shape # [n,224,224,3]
         deconv_shape3 = tf.stack([shape[0], shape[1], shape[2], NUM_OF_CLASSESS]) # [n,224,224,151]
+        # deconv_shape3 = [-1, shape[1], shape[2], NUM_OF_CLASSESS] # [n,224,224,151]
         W_t3 = utils.weight_variable([16, 16, NUM_OF_CLASSESS, deconv_shape2[3].value], name="W_t3")
         b_t3 = utils.bias_variable([NUM_OF_CLASSESS], name="b_t3")
         conv_t3 = utils.conv2d_transpose_strided(fuse_2, W_t3, b_t3, output_shape=deconv_shape3, stride=8) # [n,224,224,151]  28*8=224
+        '''
+        conv_t3=tf.layers.conv2d_transpose(
+            fuse_2, NUM_OF_CLASSESS, 16,strides=8,padding='same')  # [n,224,224,151]  28*8=224
+
 
         annotation_pred = tf.argmax(conv_t3, dimension=3, name="prediction") # [n,224,224]
 
