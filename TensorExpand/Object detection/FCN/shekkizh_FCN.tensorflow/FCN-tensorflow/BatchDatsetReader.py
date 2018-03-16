@@ -34,14 +34,18 @@ class BatchDatset:
         self.__channels = True
         self.images = np.array([self._transform(filename['image']) for filename in self.files])
         self.__channels = False
-        self.annotations = np.array(
-            [np.expand_dims(self._transform(filename['annotation']), axis=3) for filename in self.files])
+        # self.annotations = np.array(
+        #     [np.expand_dims(self._transform(filename['annotation']), axis=3) for filename in self.files]) # [h,w,1]
+
+        self.annotations = np.array([self._transform(filename['annotation']) for filename in self.files]) # [h,w,3]
+        self.annotations=np.expand_dims(np.argmax(self.annotations,axis=-1),-1) # [h,w,1]
+
         print (self.images.shape)
         print (self.annotations.shape)
 
     def _transform(self, filename):
-        # image = misc.imread(filename) # 传入是图片路径
-        image=filename # 传入的直接numpy array
+        image = misc.imread(filename) # 传入是图片路径
+        # image=filename # 传入的直接numpy array
         if self.__channels and len(image.shape) < 3:  # make sure images are of shape(h,w,3)
             image = np.array([image for i in range(3)])
 
