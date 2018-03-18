@@ -1,0 +1,404 @@
+{
+    "info": {
+        "description": "COCO 2017 Dataset",
+        "url": "http://cocodataset.org",
+        "version": "1.0",
+        "year": 2017,
+        "contributor": "COCO Consortium",
+        "date_created": "2017/09/01"
+    },
+    "licenses": [
+        {
+            "url": "http://creativecommons.org/licenses/by-nc-sa/2.0/",
+            "id": 1,
+            "name": "Attribution-NonCommercial-ShareAlike License"
+        },
+        {
+            "url": "http://creativecommons.org/licenses/by-nc/2.0/",
+            "id": 2,
+            "name": "Attribution-NonCommercial License"
+        },
+        {
+            "url": "http://creativecommons.org/licenses/by-nc-nd/2.0/",
+            "id": 3,
+            "name": "Attribution-NonCommercial-NoDerivs License"
+        },
+        {
+            "url": "http://creativecommons.org/licenses/by/2.0/",
+            "id": 4,
+            "name": "Attribution License"
+        },
+        {
+            "url": "http://creativecommons.org/licenses/by-sa/2.0/",
+            "id": 5,
+            "name": "Attribution-ShareAlike License"
+        },
+        {
+            "url": "http://creativecommons.org/licenses/by-nd/2.0/",
+            "id": 6,
+            "name": "Attribution-NoDerivs License"
+        },
+        {
+            "url": "http://flickr.com/commons/usage/",
+            "id": 7,
+            "name": "No known copyright restrictions"
+        },
+        {
+            "url": "http://www.usa.gov/copyright.shtml",
+            "id": 8,
+            "name": "United States Government Work"
+        }
+    ],
+    "images": [
+        {
+            "license": 4,
+            "file_name": "000000397133.jpg",
+            "coco_url": "http://images.cocodataset.org/val2017/000000397133.jpg",
+            "height": 427,
+            "width": 640,
+            "date_captured": "2013-11-14 17:02:52",
+            "flickr_url": "http://farm7.staticflickr.com/6116/6255196340_da26cf2c9e_z.jpg",
+            "id": 397133
+        }
+    ],
+    "categories": [
+        {
+            "supercategory": "person",
+            "id": 1,
+            "name": "person",
+            "keypoints": [
+                "nose",
+                "left_eye",
+                "right_eye",
+                "left_ear",
+                "right_ear",
+                "left_shoulder",
+                "right_shoulder",
+                "left_elbow",
+                "right_elbow",
+                "left_wrist",
+                "right_wrist",
+                "left_hip",
+                "right_hip",
+                "left_knee",
+                "right_knee",
+                "left_ankle",
+                "right_ankle"
+            ],
+            "skeleton": [
+                [
+                    16,
+                    14
+                ],
+                [
+                    14,
+                    12
+                ],
+                [
+                    17,
+                    15
+                ],
+                [
+                    15,
+                    13
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    6,
+                    12
+                ],
+                [
+                    7,
+                    13
+                ],
+                [
+                    6,
+                    7
+                ],
+                [
+                    6,
+                    8
+                ],
+                [
+                    7,
+                    9
+                ],
+                [
+                    8,
+                    10
+                ],
+                [
+                    9,
+                    11
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    3,
+                    5
+                ],
+                [
+                    4,
+                    6
+                ],
+                [
+                    5,
+                    7
+                ]
+            ]
+        }
+    ],
+    "annotations": [
+        {
+            "segmentation": [
+                [
+                    446.71,
+                    70.66,
+                    466.07,
+                    72.89,
+                    471.28,
+                    78.85,
+                    473.51,
+                    88.52,
+                    473.51,
+                    98.2,
+                    462.34,
+                    111.6,
+                    475.74,
+                    126.48,
+                    484.67,
+                    136.16,
+                    494.35,
+                    157.74,
+                    496.58,
+                    174.12,
+                    498.07,
+                    182.31,
+                    485.42,
+                    189.75,
+                    474.25,
+                    189.01,
+                    470.53,
+                    202.4,
+                    475.74,
+                    337.12,
+                    469.04,
+                    347.54,
+                    455.65,
+                    343.08,
+                    450.44,
+                    323.72,
+                    441.5,
+                    255.99,
+                    433.32,
+                    250.04,
+                    406.52,
+                    340.1,
+                    397.59,
+                    344.56,
+                    388.66,
+                    330.42,
+                    408.01,
+                    182.31,
+                    396.85,
+                    186.77,
+                    392.38,
+                    177.84,
+                    389.4,
+                    166.68,
+                    390.89,
+                    147.32,
+                    418.43,
+                    119.04,
+                    434.06,
+                    111.6,
+                    429.6,
+                    98.94,
+                    428.85,
+                    81.08,
+                    441.5,
+                    72.89,
+                    443.74,
+                    69.92
+                ]
+            ],
+            "num_keypoints": 13,
+            "area": 17376.91885,
+            "iscrowd": 0,
+            "keypoints": [
+                433,
+                94,
+                2,
+                434,
+                90,
+                2,
+                0,
+                0,
+                0,
+                443,
+                98,
+                2,
+                0,
+                0,
+                0,
+                420,
+                128,
+                2,
+                474,
+                133,
+                2,
+                396,
+                162,
+                2,
+                489,
+                173,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                419,
+                214,
+                2,
+                458,
+                215,
+                2,
+                411,
+                274,
+                2,
+                458,
+                273,
+                2,
+                402,
+                333,
+                2,
+                465,
+                334,
+                2
+            ],
+            "image_id": 397133,
+            "bbox": [
+                388.66,
+                69.92,
+                109.41,
+                277.62
+            ],
+            "category_id": 1,
+            "id": 200887
+        },
+        {
+            "segmentation": [
+                [
+                    0.43,
+                    299.58,
+                    2.25,
+                    299.58,
+                    9.05,
+                    287.78,
+                    32.66,
+                    299.13,
+                    39.01,
+                    296.4,
+                    48.09,
+                    290.96,
+                    43.55,
+                    286.87,
+                    62.16,
+                    291.86,
+                    61.25,
+                    286.87,
+                    37.65,
+                    279.15,
+                    18.13,
+                    272.8,
+                    0,
+                    262.81
+                ]
+            ],
+            "num_keypoints": 1,
+            "area": 1037.7819,
+            "iscrowd": 0,
+            "keypoints": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                9,
+                277,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "image_id": 397133,
+            "bbox": [
+                0,
+                262.81,
+                62.16,
+                36.77
+            ],
+            "category_id": 1,
+            "id": 1218137
+        }
+    ]
+}
