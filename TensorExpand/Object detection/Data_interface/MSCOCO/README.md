@@ -1,6 +1,7 @@
 参考：
 
 - [cocodataset/cocoapi](https://github.com/cocodataset/cocoapi)
+- [philferriere/cocoapi](https://github.com/philferriere/cocoapi)- support Windows build and python3
 - [COCO数据库](http://blog.csdn.net/happyhorizion/article/details/77894205)
 
 
@@ -37,7 +38,7 @@ pip3 install git+https://github.com/philferriere/cocoapi.git#subdirectory=Python
 
 ----------
 # 下载MS COCO数据
-[参考简单的MS COCO数据集下载方法](http://blog.csdn.net/qq_33000225/article/details/78831102)
+- [参考简单的MS COCO数据集下载方法](http://blog.csdn.net/qq_33000225/article/details/78831102)
 
 ```python
 sudo apt-get install aria2
@@ -46,11 +47,33 @@ aria2c -c http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train
 aria2c -c http://msvocds.blob.core.windows.net/coco2014/train2014.zip 
 aria2c -c http://msvocds.blob.core.windows.net/coco2014/val2014.zip 
 ```
+
+## coco数据集下载链接
+数据包括了**物体检测**和keypoints**身体关键点**的检测和**图片描述**。
+
+- [MS coco数据集下载](http://blog.csdn.net/daniaokuye/article/details/78699138)
+
+```python
+http://images.cocodataset.org/zips/train2017.zip 
+http://images.cocodataset.org/annotations/annotations_trainval2017.zip
+
+http://images.cocodataset.org/zips/val2017.zip 
+http://images.cocodataset.org/annotations/stuff_annotations_trainval2017.zip
+
+http://images.cocodataset.org/zips/test2017.zip 
+http://images.cocodataset.org/annotations/image_info_test2017.zip 
+```
+
+这些就是全部的microsoft coco数据集2017的链接了。
+
+
 # 分析COCO数据特点
-参考 [Dataset - COCO Dataset 数据特点](http://blog.csdn.net/zziahgf/article/details/72819043)
+- [Dataset - COCO Dataset 数据特点](http://blog.csdn.net/zziahgf/article/details/72819043)
 
-[COCO数据集annotation内容](http://blog.csdn.net/qq_30401249/article/details/72636414)
+- [COCO数据集annotation内容](http://blog.csdn.net/qq_30401249/article/details/72636414)
+
+- [COCO 标注详解](http://blog.csdn.net/yeyang911/article/details/78675942)
 
 
-
-
+# 其他数据集
+- [机器学习数据集(Dataset)汇总](http://blog.csdn.net/MyArrow/article/details/51828681)
