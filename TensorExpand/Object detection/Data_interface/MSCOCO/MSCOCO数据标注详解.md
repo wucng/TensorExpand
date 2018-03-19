@@ -8,6 +8,9 @@
 
 
 ----------
+完整代码[点击此处](https://github.com/fengzhongyouxia/TensorExpand/tree/master/TensorExpand/Object%20detection/Data_interface/MSCOCO)
+
+----------
 [toc]
 
 ----------
@@ -109,7 +112,7 @@ json.dump(data_2,open('./new_instances_val2017.json','w'),indent=4) # indent=4 �
             "width": 640, # 宽
             "date_captured": "2013-11-14 17:02:52", # 数据获取日期
             "flickr_url": "http://farm7.staticflickr.com/6116/6255196340_da26cf2c9e_z.jpg",# flickr网路地址
-            "id": 397133 # 图片的ID编号
+            "id": 397133 # 图片的ID编号（每张图片ID是唯一的）
         },
         ……
         ……
@@ -160,7 +163,7 @@ json.dump(data_2,open('./new_instances_val2017.json','w'),indent=4) # indent=4 �
             "image_id": 397133, # 对应的图片ID（与images中的ID对应）
             "bbox": [217.62,240.54,38.99,57.75], # 定位边框 [x,y,w,h]
             "category_id": 44, # 类别ID（与categories中的ID对应）
-            "id": 82445 # 对象ID，因为每一个图像有不止一个对象，所以要对每一个对象编号
+            "id": 82445 # 对象ID，因为每一个图像有不止一个对象，所以要对每一个对象编号（每个对象的ID是唯一的）
         },
         ……
         ……
@@ -264,3 +267,309 @@ A table with pies being made and a person standing near a wall with pots and pan
 
 ## 仿照COCO JSON文件
 仿照COCO的数据格式，将[labelme的JSON](http://blog.csdn.net/wc781708249/article/details/79595174)改造成COCO的JSON
+
+### 首先是要`labelme`做好图片标注
+
+![这里写图片描述](http://img.blog.csdn.net/20180319090117760?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+![这里写图片描述](http://img.blog.csdn.net/20180319090614294?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+![这里写图片描述](http://img.blog.csdn.net/20180319091333002?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+说明：（类别不一定对，只是为了说明问题）
+bobcat-美国短耳猫
+plushcat-布偶猫
+deerhound-小鹿犬
+mainecat-缅因猫
+golden-金毛
+
+### 将labelme的JSON转成COCO格式JSON
+这里写一个class实现以下功能，labelme2COCO.py中 的部分代码如下：
+
+```python
+def image(self,data,num):
+        image={}
+        img = utils.img_b64_to_array(data['imageData'])  # 解析原图片数据
+        # img=io.imread(data['imagePath']) # 通过图片路径打开图片
+        # img = cv2.imread(data['imagePath'], 0)
+        height, width = img.shape[:2]
+        img = None
+        image['height']=height
+        image['width'] = width
+        image['id']=num+1
+        image['file_name'] = data['imagePath'].split('/')[-1]
+
+        self.height=height
+        self.width=width
+
+        return image
+
+   def categorie(self,label):
+       categorie={}
+       categorie['supercategory'] = label[0]
+       categorie['id']=len(self.label)+1 # 0 默认为背景
+       categorie['name'] = label[1]
+       return categorie
+
+   def annotation(self,points,label,num):
+       annotation={}
+       annotation['segmentation']=[list(np.asarray(points).flatten())]
+       annotation['iscrowd'] = 0
+       annotation['image_id'] = num+1
+       # annotation['bbox'] = str(self.getbbox(points)) # 使用list保存json文件时报错（不知道为什么）
+       # list(map(int,a[1:-1].split(','))) a=annotation['bbox'] 使用该方式转成list
+       annotation['bbox'] = list(map(float,self.getbbox(points)))
+
+       annotation['category_id'] = self.getcatid(label)
+       annotation['id'] = self.annID
+       return annotation
+```
+注：这里只实现images、categories、annotations三个字段内容，因为只用到这几个字段
+
+
+----------
+### 可视化数据
+这部分是使用COCO的API接口打开刚才自己生成的JSON文件，以验证是否存在问题。
+
+`visualization.py`
+
+```python
+# -*- coding:utf-8 -*-
+
+from __future__ import print_function
+from pycocotools.coco import COCO
+import os, sys, zipfile
+import urllib.request
+import shutil
+import numpy as np
+import skimage.io as io
+import matplotlib.pyplot as plt
+import pylab
+pylab.rcParams['figure.figsize'] = (8.0, 10.0)
+
+annFile='./new.json'
+coco=COCO(annFile)
+
+# display COCO categories and supercategories
+cats = coco.loadCats(coco.getCatIds())
+nms=[cat['name'] for cat in cats]
+print('COCO categories: \n{}\n'.format(' '.join(nms)))
+
+nms = set([cat['supercategory'] for cat in cats])
+print('COCO supercategories: \n{}'.format(' '.join(nms)))
+
+# imgIds = coco.getImgIds(imgIds = [324158])
+imgIds = coco.getImgIds()
+imgId=np.random.randint(0,len(imgIds))
+img = coco.loadImgs(imgIds[imgId])[0]
+dataDir = '.'
+# dataType = 'val2017'
+# I = io.imread('%s/%s/%s'%(dataDir,dataType,img['file_name']))
+I = io.imread('%s/%s'%(dataDir,img['file_name']))
+
+plt.axis('off')
+plt.imshow(I)
+plt.show()
+
+
+# load and display instance annotations
+# 加载实例掩膜
+# catIds = coco.getCatIds(catNms=['person','dog','skateboard']);
+# catIds=coco.getCatIds()
+catIds=[]
+for ann in coco.dataset['annotations']:
+    if ann['image_id']==imgIds[imgId]:
+        catIds.append(ann['category_id'])
+
+plt.imshow(I); plt.axis('off')
+annIds = coco.getAnnIds(imgIds=img['id'], catIds=catIds, iscrowd=None)
+anns = coco.loadAnns(annIds)
+coco.showAnns(anns)
+plt.show()
+```
+
+显示结果：
+
+![这里写图片描述](http://img.blog.csdn.net/20180319140526072?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+![这里写图片描述](http://img.blog.csdn.net/20180319140535880?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+![这里写图片描述](http://img.blog.csdn.net/20180319140544782?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+
+----------
+# Object Keypoint 类型的标注格式
+运行脚本`one_image_json.py` 得到单张图片的JSON信息。
+
+基本上内容与Object Instance的标注格式一样，<font color=#DD00>不同的地方在于categories、annotations字段内容不一样。</font>
+
+主要内容有：
+
+```python
+{
+    "info": { 
+        "description": "COCO 2017 Dataset",
+        "url": "http://cocodataset.org",
+        "version": "1.0",
+        "year": 2017,
+        "contributor": "COCO Consortium",
+        "date_created": "2017/09/01"
+    },
+    "licenses": [
+        {
+            "url": "http://creativecommons.org/licenses/by-nc-sa/2.0/",
+            "id": 1,
+            "name": "Attribution-NonCommercial-ShareAlike License"
+        },
+        ……
+        ……
+    ],
+    "images": [
+        {
+            "license": 4,
+            "file_name": "000000397133.jpg", # 图片名
+            "coco_url": "http://images.cocodataset.org/val2017/000000397133.jpg", # coco 链接地址
+            "height": 427, # 高
+            "width": 640, # 宽
+            "date_captured": "2013-11-14 17:02:52", # 获取日期
+            "flickr_url": "http://farm7.staticflickr.com/6116/6255196340_da26cf2c9e_z.jpg", # flickr 链接地址
+            "id": 397133 # 图片ID（每张图片ID唯一）
+        }
+    ],
+    "categories": [
+        {
+            "supercategory": "person", # 主类
+            "id": 1,  # class id
+            "name": "person", # 子类（具体类别）
+            "keypoints": [ # 相比Object Instance多了这个字段
+                "nose",
+                "left_eye",
+                "right_eye",
+                "left_ear",
+                "right_ear",
+                "left_shoulder",
+                "right_shoulder",
+                "left_elbow",
+                "right_elbow",
+                "left_wrist",
+                "right_wrist",
+                "left_hip",
+                "right_hip",
+                "left_knee",
+                "right_knee",
+                "left_ankle",
+                "right_ankle"
+            ],
+            "skeleton": [ # 骨架
+                [
+                    16,14
+                ],
+                [
+                    14,12
+                ],
+               ……
+               ……
+                [
+                    5,7
+                ]
+            ]
+        }
+    ],
+    "annotations": [
+        {
+            "segmentation": [
+                [
+                    446.71,70.66, # 多边形(对象mask)第一个点 x，y
+                    466.07,72.89,
+                    471.28,78.85,
+                    473.51,88.52,
+                    473.51,98.2,
+                   ……
+                   ……
+                    443.74,69.92
+                ]
+            ],
+            "num_keypoints": 13, # 关键点数
+            "area": 17376.91885,
+            "iscrowd": 0,
+            "keypoints": [
+                # v=0 表示这个关键点没有标注（这种情况下x=y=v=0）
+                # v=1 表示这个关键点标注了但是不可见(被遮挡了）
+                # v=2 表示这个关键点标注了同时也可见
+                433,94,2, # x,y,v 
+                434,90,2,
+                0,0,0,
+                443,98,2,
+                0,0,0,
+                ……
+                ……
+            ],
+            "image_id": 397133, # 对应的图片ID
+            "bbox": [
+                388.66,69.92,109.41,277.62 # [x,y,w,h] 对象定位框
+            ],
+            "category_id": 1, # 类别id
+            "id": 200887 # 对象id（每个对象id都是唯一的，即不能出现重复）
+        },
+        ……
+        ……
+    ]
+}
+```
+
+# Image Caption的标注格式
+
+运行脚本`one_image_json.py` 得到单张图片的JSON信息。
+
+基本上内容与Object Instance的标注格式一样，<font color=#DD00>不同的地方在于annotations字段内容不一样以及没有categories字段</font>
+
+```python
+{
+    "info": {
+        "description": "COCO 2017 Dataset",
+        "url": "http://cocodataset.org",
+        "version": "1.0",
+        "year": 2017,
+        "contributor": "COCO Consortium",
+        "date_created": "2017/09/01"
+    },
+    "licenses": [
+        {
+            "url": "http://creativecommons.org/licenses/by-nc-sa/2.0/",
+            "id": 1,
+            "name": "Attribution-NonCommercial-ShareAlike License"
+        },
+       ……
+       ……
+    ],
+    "images": [
+        {
+            "license": 4,
+            "file_name": "000000397133.jpg",
+            "coco_url": "http://images.cocodataset.org/val2017/000000397133.jpg",
+            "height": 427,
+            "width": 640,
+            "date_captured": "2013-11-14 17:02:52",
+            "flickr_url": "http://farm7.staticflickr.com/6116/6255196340_da26cf2c9e_z.jpg",
+            "id": 397133
+        }
+    ],
+    "annotations": [
+        {
+            "image_id": 397133, # 图片ID（唯一）
+            "id": 370509, # 对象ID（唯一） （没有类别ID）
+            "caption": "A man is in a kitchen making pizzas." # 图片描述
+        },
+	……
+	……	
+        {
+            "image_id": 397133,
+            "id": 375891,
+            "caption": "A table with pies being made and a person standing near a wall with pots and pans hanging on the wall."
+        }
+    ]
+}
+```
+
+
+<font size=5 color=##FF00FF>这三种标注的info，licenses，images的内容是一样的。</font>
