@@ -45,6 +45,10 @@ categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'trai
  'couch', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
  'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
+# categories=['diningtable', 'person', 'bottle', 'boat', 'train', 'bird', 'dog', 'cat', 'tvmonitor', 'cow', 'car', 'sofa',
+# 			'horse', 'chair', 'pottedplant', 'bicycle', 'motorbike', 'aeroplane', 'sheep', 'bus']
+
+
 palette = Visualize.Palette(len(categories))
 
 image = tf.placeholder(tf.float32, [None, None, None, 3])
@@ -77,7 +81,7 @@ def preprocessInput(img):
 	return img
 
 with tf.Session() as sess:
-	if not CheckpointLoader.loadCheckpoint(sess, None, opt.n, ignoreVarsInFileNotInSess=True):
+	if not CheckpointLoader.loadCheckpoint(sess, opt.n,None, ignoreVarsInFileNotInSess=True):
 		print("Failed to load network.")
 		sys.exit(-1)
 

@@ -31,69 +31,6 @@ source /etc/profile # 这句一定要执行
 make
 ```
 
-
-
-尝试加载`.so`文件时，您可能会遇到未定义的符号问题。如果您自己构建了TensorFlow版本并且Makefile无法自动检测您的ABI版本，则会出现这种情况。日志中可能会遇到类似`“tensorflow.python.framework.errors_impl.NotFoundError：BoxEngine / ROIPooling / roi_pooling.so：undefined symbol：_ZN10tensorflow7strings6StrCatB5cxx11ERKNS0_8AlphaNumE”`的错误。在这种情况下，清理项目（清理）并使用`USE_OLD_EABI = 0`标志（`export USE_OLD_EABI = 0 & make`）重建它。
-
-您可能想要在没有GPU支持的情况下构建ROI池。使用`USE_GPU = 0`标志关闭代码的CUDA部分。
-
-您可能需要运行以下命令来安装python依赖项：
-
-```
-pip3 install --user -r packages.txt
-```
-# Testing
-您可以使用`test.py`运行训练有素的模型。 模型路径应该没有文件扩展名（没有.data *和.index）。 一个例子：
-
-![这里写图片描述](https://cloud.githubusercontent.com/assets/2706617/25061919/2003e832-21c1-11e7-9397-14224d39dbe9.jpg)
-
-# Pretrained model
-你可以从这里下载一个预训练模型：
-http://xdever.engineerjs.com/rfcn-tensorflow-export.tar.bz2
-
-将它解压到你的项目目录。 然后您可以使用以下命令运行网络：
-
-```python
-python3 test.py -n export/model -i <input image> -o <output image>
-```
-注意：这个预训练模型没有以任何方式进行超参数优化。 该模型可以（并且）在优化时具有更好的性能。 尝试不同的学习率和分类以回归损失余额。 最佳值与测试高度相关。
-
-# Training the network
-为了训练网络，您首先需要下载MS COCO数据集。 下载所需的文件并将其解压缩到具有以下结构的目录中：
-
-```python
-<COCO>
-├─  annotations
-│    ├─  instances_train2014.json
-│    └─  ...
-|
-├─  train2014
-└─  ...
-```
-运行这个命名： `python3 main.py -dataset <COCO> -name <savedir>`
-- <COCO> - coco根目录的完整路径
-- <savedir> - 保存文件的路径。 该目录及其子目录将自动创建。
-
-<savedir>将具有以下结构：
-
-```python
-<savedir>
-├─  preview
-│    └─  preview.jpg - preview snapshots from training process.
-|
-├─  save - TensorFlow checkpoint directory
-│    ├─  checkpoint
-│    ├─  model_*.*
-│    └─  ...
-└─  args.json - saved command line arguments.
-```
-您可以随时停止训练过程并稍后恢复，只需运行`python3 main.py -name <savedir>`，而无需任何其他参数。 所有命令行参数将自动保存并重新加载。
-# License
-该软件在Apache 2.0许可下。 有关更多详细信息，请参阅http://www.apache.org/licenses/LICENSE-2.0。
-
-# Notes
-此代码要求TensorFlow> = 1.0（最后一个已知工作版本是1.4.1）。 使用python3.6进行测试，编译它应该可以使用python 2。
-
 # 训练自己的数据
 参考[问题#7](https://github.com/xdever/RFCN-tensorflow/issues/7)
 
@@ -280,4 +217,3 @@ python3 test.py -n save/save/ -i <input image> -o <output image>
 
 
 ![这里写图片描述](http://img.blog.csdn.net/20180320140755851?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2M3ODE3MDgyNDk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
-
