@@ -286,6 +286,7 @@ if train == 1:
         # Load the last model you trained and continue training
         model.load_weights(model.find_last()[1], by_name=True)
 
+    # Training - Stage 1
     # Train the head branches
     # Passing layers="heads" freezes all layers except the head
     # layers. You can also pass a regular expression to select
@@ -293,19 +294,27 @@ if train == 1:
     # '''
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=4,
+                epochs=40,
                 layers='heads')
-    '''
+    # '''
 
+    # Training - Stage 2
+    # Finetune layers from ResNet stage 4 and up
+    print("Fine tune Resnet stage 4 and up")
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=120,
+                layers='4+')
+
+    # Training - Stage 3
     # Fine tune all layers
     # Passing layers="all" trains all layers. You can also
     # pass a regular expression to select which layers to
     # train by name pattern.
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE / 10,
-                epochs=2,
+                epochs=160,
                 layers="all")
-    # '''
 
     # Save weights
     # Typically not needed because callbacks save after every epoch
