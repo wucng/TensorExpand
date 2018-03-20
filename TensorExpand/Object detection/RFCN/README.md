@@ -214,7 +214,7 @@ tar zxf inception_resnet_v2_2016_08_30.tar.gz
 
 ```python
 def categoryCount(self):
-   return 80 # 改成数据的实际类别数 Pascal VOC2017只有20个类别 所以这里修改成20
+   return 80 # 改成数据的实际类别数 Pascal VOC2017只有20个类别 所以这里修改成20（不算背景）
 ```
 
 ## 执行命名：
