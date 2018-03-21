@@ -162,6 +162,7 @@ class PascalVOC2coco(object):
             return [0]
 
     def mask2polygons(self):
+        '''从mask提取边界点'''
         contours = cv2.findContours(self.mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # 找到轮廓线
         bbox=[]
         for cont in contours[1]:
@@ -171,6 +172,7 @@ class PascalVOC2coco(object):
 
     # '''
     def getbbox(self, points):
+        '''边界点生成mask，从mask提取定位框'''
         # img = np.zeros([self.height,self.width],np.uint8)
         # cv2.polylines(img, [np.asarray(points)], True, 1, lineType=cv2.LINE_AA)  # 画边界线
         # cv2.fillPoly(img, [np.asarray(points)], 1)  # 画多边形 内部像素值为1
@@ -202,6 +204,7 @@ class PascalVOC2coco(object):
                 right_bottom_r - left_top_r]  # [x1,y1,w,h] 对应COCO的bbox格式
 
     def polygons_to_mask(self, img_shape, polygons):
+        '''边界点生成mask'''
         mask = np.zeros(img_shape, dtype=np.uint8)
         mask = PIL.Image.fromarray(mask)
         xy = list(map(tuple, polygons))
