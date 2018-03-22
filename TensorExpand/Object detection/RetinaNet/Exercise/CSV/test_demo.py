@@ -45,7 +45,7 @@ keras.backend.tensorflow_backend.set_session(get_session())
 # adjust this to point to your downloaded/trained model
 # model_path = os.path.join('.', 'snapshots', 'resnet50_coco_best_v2.0.1.h5')
 # model_path=os.path.join('.', 'snapshots', 'resnet50_pascal_01.h5')
-model_path=os.path.join('.', 'snapshots', 'resnet50_coco_03.h5')
+model_path=os.path.join('.', 'snapshots', 'resnet50_csv_01.h5')
 
 # load retinanet model
 model = keras.models.load_model(model_path, custom_objects=custom_objects)
@@ -67,6 +67,7 @@ labels_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'air
                    73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'}
 '''
 class_name=['diningtable', 'person', 'bottle', 'boat', 'train', 'bird', 'dog', 'cat', 'tvmonitor', 'cow', 'car', 'sofa', 'horse', 'chair', 'pottedplant', 'bicycle', 'motorbike', 'aeroplane', 'sheep', 'bus']
+class_name=sorted(class_name)
 labels_to_names=dict(zip(range(len(class_name)),class_name))
 
 # Run detection on example
