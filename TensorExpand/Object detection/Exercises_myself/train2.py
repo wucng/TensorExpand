@@ -91,7 +91,7 @@ class Data_info(object):
             img_mask=np.zeros_like(img_,np.uint8)
             # cv2.fillPoly(img_mask,[bbox],1)
             cv2.rectangle(img_mask, (bbox[0], bbox[1]), (bbox[2], bbox[3]), 1, -1)
-            img_*=img_mask
+            img_*=img_mask # 屏蔽掉对象框以外的像素
             # img_=cv2.bitwise_and(img_,img_mask)
             img.append(cv2.resize(img_,(500,400))) # 转成400x500
 
