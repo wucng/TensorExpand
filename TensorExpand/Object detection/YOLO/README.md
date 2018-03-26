@@ -1,3 +1,0 @@
-- [YOLO训练](http://blog.csdn.net/hrsstudy/article/details/65644517)
-- [pjreddie/darknet](https://github.com/pjreddie/darknet)
-- https://pjreddie.com/darknet/
