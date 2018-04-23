@@ -113,6 +113,9 @@ with tf.Graph().as_default():
         # print(emb_array.shape)
 
         embeddings=tf.stop_gradient(embeddings) # 做迁移 不更新这层以及之前所有层的参数
+        # 或者
+        # tvars = tf.trainable_variables() # 找到所以可更新的变量
+        # tvars.trainable=False  # 将变量的trainable属性设置为False（不更新参数）
 
         y_true = tf.placeholder(tf.int64, shape=[None,], name='y_true')
         # y_true_cls = tf.argmax(y_true, dimension=1)
