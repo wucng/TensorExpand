@@ -3,6 +3,8 @@
 
 '''
 inception_resnet_v2  输入shape 299x299x3
+
+inception_resnet_v2下载地址：https://github.com/tensorflow/models/tree/master/research/slim/nets
 '''
 
 from __future__ import absolute_import
