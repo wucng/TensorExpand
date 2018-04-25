@@ -227,9 +227,9 @@ with tf.Graph().as_default():
             embeddings=tf.stop_gradient(embeddings) # 做迁移 不更新这层以及之前所有层的参数
 
         if train == 1:
-            x = tf.placeholder(tf.float32, (batch_size, img_Pixels_h, img_Pixels_w, img_Pixels_c))
+            x = tf.placeholder(tf.float32, (batch_size, img_Pixels_h, img_Pixels_w, img_Pixels_c),name='x')
         else:
-            x = tf.placeholder(tf.float32, (None, img_Pixels_h, img_Pixels_w, img_Pixels_c))
+            x = tf.placeholder(tf.float32, (None, img_Pixels_h, img_Pixels_w, img_Pixels_c),name='x')
 
         y_true = tf.placeholder(tf.int64, shape=[None,], name='y_true')
         # y_true_cls = tf.argmax(y_true, dimension=1)
