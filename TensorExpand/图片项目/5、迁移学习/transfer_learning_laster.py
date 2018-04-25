@@ -243,7 +243,9 @@ with tf.Graph().as_default():
         d_params = [v for v in tvars if v.name.startswith('D/')]
         # 注 默认是更新所以参数 var_list=None
         train_op = tf.train.GradientDescentOptimizer(lr).minimize(cost,var_list=d_params)
-
+        
+        tf.global_variables_initializer().run()
+        
         # 验证之前是否已经保存了检查点文件
         ckpt = tf.train.get_checkpoint_state(log_dir)
         if ckpt and ckpt.model_checkpoint_path:
