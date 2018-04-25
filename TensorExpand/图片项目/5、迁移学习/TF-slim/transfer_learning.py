@@ -38,17 +38,22 @@ with tf.Graph().as_default() as graph:
 
     net=end_points[1]['PreLogitsFlatten']
     net=tf.stop_gradient(net) # 这层与之前的层都不进行梯度更新
-    
+
     print(net.shape)
+    with tf.variable_scope('D'):
+        fc1 = slim.fully_connected(net, 512, activation_fn=tf.nn.elu,
+                                      scope='fc1')
+        fc = slim.fully_connected(fc1, 48, activation_fn=tf.nn.sigmoid,
+                                   scope='coding_layer')
+        y = slim.fully_connected(fc, num_classes, activation_fn=tf.nn.softmax,
+                                      scope='output')
 
-    fc = slim.fully_connected(net, 128, activation_fn=tf.nn.sigmoid,
-                                  scope='coding_layer')
-
-    y = slim.fully_connected(fc, num_classes, activation_fn=tf.nn.softmax,
-                                  scope='output')
+    # 只更新coding_layer与output这两层参数，其他的参数不更新
+    tvars = tf.trainable_variables()  # 获取所有可以更新的变量
+    d_params = [v for v in tvars if v.name.startswith('D/')]
 
     cost=tf.losses.softmax_cross_entropy(onehot_labels=y_,logits=y)
-    train_op = tf.train.GradientDescentOptimizer(lr).minimize(cost)
+    train_op = tf.train.GradientDescentOptimizer(lr).minimize(cost,var_list=d_params)
 
     correct_prediction = tf.equal(y, y_)
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -68,11 +73,12 @@ with tf.Graph().as_default() as graph:
     var_list = tf.global_variables()
     var_list_1 = []
     for var in var_list:  # 不加载 最后两层的参数，即重新训练
-        if 'coding_layer' in var.name or 'output' in var.name:
+        if 'fc1' in var.name or 'coding_layer' in var.name or 'output' in var.name:
             # var_list_1.remove(var)
             continue
         var_list_1.append(var)
     var_list=None
+
     saver=tf.train.Saver(var_list=var_list_1)
     saver.restore(sess,'./output/inception_resnet_v2_2016_08_30.ckpt')
 
