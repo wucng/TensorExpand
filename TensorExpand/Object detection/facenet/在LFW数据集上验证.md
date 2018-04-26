@@ -42,7 +42,7 @@ LFW数据集的对齐方式如下所示(将以下语句写入shell脚本执行 �
 
 ```python
 for N in {1..4}; do \
-python src/align/align_dataset_mtcnn.py \
+CUDA_VISIBLE_DEVICES=1 python3 src/align/align_dataset_mtcnn.py \
 ~/datasets/lfw/raw \
 ~/datasets/lfw/lfw_mtcnnpy_160 \
 --image_size 160 \
