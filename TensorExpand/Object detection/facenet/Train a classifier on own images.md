@@ -25,7 +25,7 @@
 ### 在数据集的训练集部分上训练分类器的步骤如下：
 
 ```python
-python3 src/classifier.py TRAIN /home/david/datasets/lfw/lfw_mtcnnalign_160 /home/david/models/model-20170216-091149.pb ~/models/lfw_classifier.pkl --batch_size 1000 --min_nrof_images_per_class 40 --nrof_train_images_per_class 35 --use_split_dataset
+CUDA_VISIBLE_DEVICES=1 python3 src/classifier.py TRAIN ./datasets/lfw/lfw_mtcnnpy_160 ../20170512-110547/20170512-110547.pb ./models/lfw_classifier.pkl --batch_size 1000 --min_nrof_images_per_class 40 --nrof_train_images_per_class 35 --use_split_dataset
 ```
 
 训练的输出如下所示：
@@ -34,10 +34,10 @@ python3 src/classifier.py TRAIN /home/david/datasets/lfw/lfw_mtcnnalign_160 /hom
 Number of classes: 19
 Number of images: 665
 Loading feature extraction model
-Model filename: /home/david/models/model-20170216-091149.pb
+Model filename: ../20170512-110547/20170512-110547.pb
 Calculating features for images
 Training classifier
-Saved classifier model to file "/home/david/models/lfw_classifier.pkl"
+Saved classifier model to file "./models/lfw_classifier.pkl"
 ```
 
 
@@ -45,7 +45,7 @@ Saved classifier model to file "/home/david/models/lfw_classifier.pkl"
 ### 训练好的分类器可以稍后用于使用测试集进行分类：
 
 ```python
-python src/classifier.py CLASSIFY ~/datasets/lfw/lfw_mtcnnalign_160 ~/models/model-20170216-091149.pb ~/models/lfw_classifier.pkl --batch_size 1000 --min_nrof_images_per_class 40 --nrof_train_images_per_class 35 --use_split_dataset
+CUDA_VISIBLE_DEVICES=1 python3 src/classifier.py CLASSIFY ./datasets/lfw/lfw_mtcnnpy_160 ../20170512-110547/20170512-110547.pb ./models/lfw_classifier.pkl --batch_size 1000 --min_nrof_images_per_class 40 --nrof_train_images_per_class 35 --use_split_dataset
 ```
 这里使用数据集的测试集部分进行分类，并显示分类结果和分类概率。 该子集的分类准确度为〜0.98。
 
@@ -91,7 +91,7 @@ Accuracy: 0.978
 ### 分类器的训练与以前类似：
 
 ```
-python src/classifier.py TRAIN ~/datasets/my_dataset/train/ ~/models/model-20170216-091149.pb ~/models/my_classifier.pkl --batch_size 1000
+CUDA_VISIBLE_DEVICES=1 python3 src/classifier.py TRAIN ~/datasets/my_dataset/train/ ~/models/model-20170216-091149.pb ~/models/my_classifier.pkl --batch_size 1000
 ```
 分类器的训练需要几秒钟（在加载预先训练的模型之后），输出如下所示。 由于这是一个非常简单的数据集，因此准确性非常好。
 
@@ -130,7 +130,7 @@ Saved classifier model to file "/home/david/models/my_classifier.pkl"
 ### 测试集上的分类可以使用以下方式运行：
 
 ```
-python src/classifier.py CLASSIFY ~/datasets/my_dataset/test/ ~/models/model-20170216-091149.pb ~/models/my_classifier.pkl --batch_size 1000
+CUDA_VISIBLE_DEVICES=1 python3 src/classifier.py CLASSIFY ~/datasets/my_dataset/test/ ~/models/model-20170216-091149.pb ~/models/my_classifier.pkl --batch_size 1000
 ```
 
 ```
