@@ -69,13 +69,32 @@ model-20180402-114759.meta
 测试运行`validate_on_lfw`：
 
 ```python
-python src/validate_on_lfw.py \
+CUDA_VISIBLE_DEVICES=1 python3 src/validate_on_lfw.py \
 ~/datasets/lfw/lfw_mtcnnpy_160 \
 ~/models/facenet/20180402-114759 \
 --distance_metric 1 \
 --use_flipped_images \
 --subtract_mean \
 --use_fixed_image_standardization
+```
+或者
+
+```python
+CUDA_VISIBLE_DEVICES=1 python3 src/validate_on_lfw.py \
+~/datasets/lfw/lfw_mtcnnpy_160 \
+~/models/facenet/20180402-114759/20180402-114759.pb \
+--distance_metric 1 \
+--use_flipped_images \
+--subtract_mean \
+--use_fixed_image_standardization
+```
+
+
+如果出现：`ValueError: graph_def is invalid at node 'Reshape': Input tensor 'label_batch:0' Cannot convert a tensor of type int32 to an input of type int64.`
+```python
+vim src/validate_on_lfw.py
+# 在第70行加上
+label_batch=tf.to_int64(label_batch)
 ```
 
 这会
