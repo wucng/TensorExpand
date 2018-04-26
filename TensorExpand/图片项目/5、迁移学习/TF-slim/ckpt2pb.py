@@ -70,3 +70,34 @@ with tf.Graph().as_default() as graph:
     #     feed_dict={}
     #     sess.run(train_op,feed_dict=feed_dict)
     sess.close()
+
+  
+# ---------------------------------------------------------------------
+
+```python
+# 保存图表并保存变量参数
+
+from tensorflow.python.framework import graph_util
+var_list=tf.global_variables()
+constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def,output_node_names=[var_list[i].name for i in range(len(var_list))]) # 保存图表并保存变量参数
+tf.train.write_graph(constant_graph, './output', 'expert-graph.pb', as_text=False)
+
+# -----方式2-------------------
+from tensorflow.python.framework import graph_util
+var_list=tf.global_variables()
+constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def,output_node_names=[var_list[i].name for i in range(len(var_list))])
+with tf.gfile.FastGFile(logdir+'expert-graph.pb', mode='wb') as f:
+    f.write(constant_graph.SerializeToString())
+```
+
+```
+# 只保留图表
+graph_def = tf.get_default_graph().as_graph_def()
+with gfile.GFile('./output/export.pb', 'wb') as f:
+    f.write(graph_def.SerializeToString())
+
+# 或者
+tf.train.write_graph(graph_def, './output', 'expert-graph.pb', as_text=False)
+```
+    
+    
