@@ -88,6 +88,28 @@ Accuracy: 0.978
     Vladimir_Putin
 ```
 
+如果图片的size小于160x160(默认尺寸)，需在[facenet.py](https://github.com/davidsandberg/facenet/blob/master/src/facenet.py#L242)加上以下语句
+```
+def pad_image(image,pad_h=160,pad_w=160):
+    h, w = image.shape[:2]
+    assert h<pad_h
+    assert w<pad_w
+
+    err_h=pad_h-h
+    top_pad=err_h//2
+    bottom_pad=err_h-top_pad
+
+    err_w = pad_w - w
+    left_pad = err_w // 2
+    right_pad = err_w - left_pad
+
+    padding = [(top_pad, bottom_pad), (left_pad, right_pad), (0, 0)]
+    image = np.pad(image, padding, mode='constant', constant_values=0)
+    return image
+```
+在[load_data](https://github.com/davidsandberg/facenet/blob/master/src/facenet.py#L253)里加上 `img=pad_image(img)`
+
+
 ### 分类器的训练与以前类似：
 
 ```
