@@ -33,7 +33,7 @@ make
 
 
 
-尝试加载`.so`文件时，您可能会遇到未定义的符号问题。如果您自己构建了TensorFlow版本并且Makefile无法自动检测您的ABI版本，则会出现这种情况。日志中可能会遇到类似`“tensorflow.python.framework.errors_impl.NotFoundError：BoxEngine / ROIPooling / roi_pooling.so：undefined symbol：_ZN10tensorflow7strings6StrCatB5cxx11ERKNS0_8AlphaNumE”`的错误。在这种情况下，清理项目（清理）并使用`USE_OLD_EABI = 0`标志（`export USE_OLD_EABI = 0 & make`）重建它。
+尝试加载`.so`文件时，您可能会遇到未定义的符号问题。如果您自己构建了TensorFlow版本并且Makefile无法自动检测您的ABI版本，则会出现这种情况。日志中可能会遇到类似`“tensorflow.python.framework.errors_impl.NotFoundError：BoxEngine / ROIPooling / roi_pooling.so：undefined symbol：_ZN10tensorflow7strings6StrCatB5cxx11ERKNS0_8AlphaNumE”`的错误。在这种情况下，清理项目（make clean）并使用`USE_OLD_EABI = 0`标志（`export USE_OLD_EABI = 0 & make`）重建它。
 
 您可能想要在没有GPU支持的情况下构建ROI池。使用`USE_GPU = 0`标志关闭代码的CUDA部分。
 
