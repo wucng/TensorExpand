@@ -1,12 +1,16 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
 
+'''
+https://github.com/fengzhongyouxia/TensorExpand/blob/master/TensorExpand/Object%20detection/Data_interface/MSCOCO/Pascal%20VOC/PascalVOC2COCO.py
+'''
+
 import argparse
 import json
 import matplotlib.pyplot as plt
 import skimage.io as io
 import cv2
-from labelme import utils
+# from labelme import utils
 import numpy as np
 import glob
 import PIL.Image
@@ -103,6 +107,14 @@ class PascalVOC2coco(object):
         categorie['name'] = self.supercategory
         return categorie
 
+    @staticmethod
+    def change_format(contour):
+        contour2 = []
+        length = len(contour)
+        for i in range(0, length, 2):
+            contour2.append([contour[i], contour[i + 1]])
+        return np.asarray(contour2, np.int32)
+
     def annotation(self):
         annotation = {}
         # annotation['segmentation'] = [self.getsegmentation()]
@@ -113,6 +125,11 @@ class PascalVOC2coco(object):
         annotation['bbox'] = self.bbox
         annotation['category_id'] = self.getcatid(self.supercategory)
         annotation['id'] = self.annID
+
+        # 计算轮廓面积
+        contour = PascalVOC2coco.change_format(annotation['segmentation'][0])
+        annotation['area']=abs(cv2.contourArea(contour,True))
+        
         return annotation
 
     def getcatid(self, label):
