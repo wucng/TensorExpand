@@ -321,6 +321,8 @@ mkdir COCO
 
 # cocoDataFlow
 
+参考：[data2.py](./data2.py)
+
 ```python
 # -*- coding:utf-8 -*-
 # file name:cocoDataflow.py

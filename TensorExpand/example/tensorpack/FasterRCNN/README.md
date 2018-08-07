@@ -1,4 +1,4 @@
-# [Train Faster-RCNN / Mask-RCNN on COCO](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)
+﻿# [Train Faster-RCNN / Mask-RCNN on COCO](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)
 
 # 环境
 - Python 3; OpenCV.
@@ -21,7 +21,8 @@ COCO/DIR/
 	└── COCO_val2014_*.jpg
 ```
 
-Annotations for the 5k image 'minival' subset of COCO val2014 that I like to use can be found at https://dl.dropboxusercontent.com/s/o43o90bna78omob/instances_minival2014.json.zip?dl=0. Annotations for COCO val2014 (set) minus minival (~35k images) can be found at https://dl.dropboxusercontent.com/s/s3tw5zcg7395368/instances_valminusminival2014.json.zip?dl=0.
+[instances_minival2014.json](https://dl.dropboxusercontent.com/s/o43o90bna78omob/instances_minival2014.json.zip?dl=0) 5k image 'minival'与[instances_valminusminival2014.json](https://dl.dropboxusercontent.com/s/s3tw5zcg7395368/instances_valminusminival2014.json.zip?dl=0)minus minival (~35k images)
+
 
 
 如果想__训练自己的数据__需将自己的数据写成__COCO的数据格式__，参考：[Pascal VOC转COCO数据](https://blog.csdn.net/wc781708249/article/details/79615210)，[labelme数据转成COCO数据](https://blog.csdn.net/wc781708249/article/details/79611536)，另外还需修改下[config.py #L66](https://github.com/tensorpack/tensorpack/blob/master/examples/FasterRCNN/config.py#L66)行，改成自己数据类别数（如：COCO 80，VOC 20，不含背景）
@@ -35,6 +36,16 @@ Annotations for the 5k image 'minival' subset of COCO val2014 that I like to use
     BACKBONE.WEIGHTS=/path/to/ImageNet-R50-Pad.npz \
 ```
 要运行分布式训练，请设置`TRAINER = horovod`并参考[HorovodTrainer文档](http://tensorpack.readthedocs.io/modules/train.html#tensorpack.train.HorovodTrainer)。
+
+```python
+python3 train.py --config MODE_MASK=True BACKBONE.WEIGHTS=COCO-R50C4-MaskRCNN-Standard.npz DATA.BASEDIR='./data/COCO' 
+# 如果没有valminusminival2014,minival2014 修改config.py #65行，按以下方式修改
+_C.DATA.TRAIN=['train2014'] 
+_C.DATA.VAL='val2014'
+```
+
+
+
 
 # 预测图像（并在窗口中显示输出）：
 
