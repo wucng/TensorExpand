@@ -31,6 +31,17 @@ export PYTHONPATH=$PYTHONPATH:xxxx/models/samples/
 export PYTHONPATH=$PYTHONPATH:xxxx/models/tutorials/
 
 保存完成后：source /etc/profile
+
+# or
+在程序中添加以下语句
+
+import sys
+sys.path.append('xxxx/models/')
+sys.path.append('xxxx/models/official/')
+sys.path.append('xxxx/models/research/')
+sys.path.append('xxxx/models/samples/')
+sys.path.append('xxxx/models/tutorials/')
+
 ```
 
 2、安装依赖项：
