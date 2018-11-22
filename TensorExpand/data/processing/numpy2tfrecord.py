@@ -9,7 +9,8 @@ from __future__ import print_function
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 import numpy as np
-
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 """
 numpy to tfrecord
 """
@@ -26,6 +27,7 @@ def numpy_to_tfrecord(images,labels,record_location,img_h=28,img_w=28,img_c=1,sa
     :param save_num: 每隔多少张图片保存成一个tfrecord文件
     :return: 
     '''
+    if not os.path.exists(record_location): os.makedirs(record_location)
     m = 0
     writer=None
     for image,label in zip(images,labels):

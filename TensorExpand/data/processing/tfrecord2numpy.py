@@ -6,6 +6,9 @@ from __future__ import print_function
 
 import tensorflow as tf
 import glob
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 # from itertools import groupby
 # from collections import defaultdict
 # from PIL import Image
@@ -67,7 +70,6 @@ def load_images_from_tfrecord(tfrecord_file,h=32,w=32,c=3,batch_size=32):
     '''
     # Find every directory name in the imagenet-dogs directory (n02085620-Chihuahua, ...)
     labels = list(map(lambda c: c.split("\\")[-2], glob.glob(imagepath))) # 找到目录名（标签） linux使用 "/"
-
     # Match every label from label_batch and return the index where they exist in the list of classes
     # 匹配每个来自label_batch的标签并返回它们在类别列表中的索引
     train_labels = tf.map_fn(lambda l: tf.where(tf.equal(labels, l))[0,0:1][0], label_batch, dtype=tf.int64)
@@ -82,7 +84,7 @@ def load_images_from_tfrecord(tfrecord_file,h=32,w=32,c=3,batch_size=32):
 
 
 if __name__=="__main__":
-    img_batch,label_batch=load_images_from_tfrecord("output/training-images/*.tfrecords")
+    img_batch,label_batch=load_images_from_tfrecord("output/training-images/*.tfrecords",28,28,1)
     with tf.Session() as sess:
         tf.global_variables_initializer().run()
         tf.local_variables_initializer().run()
