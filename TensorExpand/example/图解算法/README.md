@@ -33,3 +33,12 @@
 2、https://github.com/brade31919/SRGAN-tensorflow
 
 ![](./SRGAN.png)
+
+# VAE
+参考：
+
+1、https://arxiv.org/abs/1312.6114
+
+2、https://www.cnblogs.com/huangshiyu13/p/6209016.html
+
+![](./VAE.png)
