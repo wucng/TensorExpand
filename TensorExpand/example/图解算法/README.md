@@ -42,3 +42,12 @@
 2、https://www.cnblogs.com/huangshiyu13/p/6209016.html
 
 ![](./VAE.png)
+
+# Style Transfer
+参考：
+
+1、https://arxiv.org/pdf/1603.08155.pdf
+
+2、https://blog.csdn.net/qq_25737169/article/details/79192211
+
+![](./Style_Transfer.png)
