@@ -51,3 +51,13 @@
 2、https://blog.csdn.net/qq_25737169/article/details/79192211
 
 ![](./Style_Transfer.png)
+
+# faster rcnn
+参考：
+- https://github.com/tryolabs/luminoth
+- https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/
+- https://www.tinymind.cn/articles/656
+- https://zhuanlan.zhihu.com/p/31426458
+- https://blog.csdn.net/u013010889/article/details/78574879
+
+![](./fasterrcnn.png)
