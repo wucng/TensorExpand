@@ -26,6 +26,10 @@
 cd ~/datasets
 mkdir -p lfw/raw
 tar xvf ~/Downloads/lfw.tgz -C lfw/raw --strip-components=1
+
+cd ./facenet
+mkdir datasets
+cp -r lfw/raw datasets
 ```
 # 3、Set the python path
 将环境变量`PYTHONPATH`设置为指向克隆的repo的`src`目录。 这通常是这样做的
@@ -41,10 +45,12 @@ export PYTHONPATH=[...]/facenet/src
 LFW数据集的对齐方式如下所示(将以下语句写入shell脚本执行 如：`sh align.sh`)：
 
 ```python
+# cd ./facenet
+
 for N in {1..4}; do \
-CUDA_VISIBLE_DEVICES=1 python3 src/align/align_dataset_mtcnn.py \
-~/datasets/lfw/raw \
-~/datasets/lfw/lfw_mtcnnpy_160 \
+python3 src/align/align_dataset_mtcnn.py \
+./datasets/lfw/raw \
+./datasets/lfw/lfw_mtcnnpy_160 \
 --image_size 160 \
 --margin 32 \
 --random_order \
